@@ -24,3 +24,9 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer components {
+  .board-card {
+    @apply bg-white border border-gray-200 shadow-none hover:border-gray-400 transition-all duration-200;
+  }
+}
