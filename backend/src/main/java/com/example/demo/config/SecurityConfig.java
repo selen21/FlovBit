@@ -1,5 +1,7 @@
 package com.example.demo.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,8 +9,6 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 @Configuration
 public class SecurityConfig {
@@ -26,6 +26,12 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/v1/auth/**").permitAll() 
                 .anyRequest().authenticated()
+            )
+            
+            // 4. İŞTE YENİ EKLENEN KISIM: Google ve GitHub ile girişi aktif ediyoruz
+            .oauth2Login(oauth2 -> oauth2
+                // Başarılı girişten sonra kullanıcıyı doğrudan Next.js (Ön Yüz) ana sayfasına ışınla!
+                .defaultSuccessUrl("http://localhost:3000/", true)
             );
         
         return http.build();
