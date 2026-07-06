@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function RegisterPage() {
   // Kullanıcının inputlara gireceği verileri tuttuğumuz state'ler
@@ -15,8 +16,8 @@ export default function RegisterPage() {
     setIsLoading(true);
 
     try {
-      // Arkadaşının Java uygulamasının kapısını çalıyoruz
-      const response = await fetch("http://localhost:8080/api/v1/auth/register", {
+      
+      const response = await fetch("http://localhost:8081/api/v1/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
