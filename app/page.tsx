@@ -1,5 +1,8 @@
 "use client";
 import { motion } from "framer-motion";
+import { SiGithub, SiFigma, SiNotion, SiLinear, SiJira, SiDiscord } from "react-icons/si";
+import { FaSlack } from "react-icons/fa";
+import { VscVscode } from "react-icons/vsc"; // <-- VS Code ikonunu buraya aldık
 
 export default function Home() {
   return (
@@ -678,18 +681,153 @@ export default function Home() {
         <p className="text-[16px] text-gray-500 mb-12">Connect the tools you already use. Zero friction.</p>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-4 justify-center">
-          {['GitHub', 'Slack', 'Figma', 'Notion', 'Linear', 'Jira', 'VS Code', 'Discord'].map((tool) => (
+          {[
+            { name: 'GitHub', icon: <SiGithub className="w-6 h-6 text-[#181717]" /> },
+            { name: 'Slack', icon: <FaSlack className="w-6 h-6 text-[#4A154B]" /> },
+            { name: 'Figma', icon: <SiFigma className="w-6 h-6 text-[#F24E1E]" /> },
+            { name: 'Notion', icon: <SiNotion className="w-6 h-6 text-black" /> },
+            { name: 'Linear', icon: <SiLinear className="w-6 h-6 text-[#5E6AD2]" /> },
+            { name: 'Jira', icon: <SiJira className="w-6 h-6 text-[#0052CC]" /> },
+            { name: 'VS Code', icon: <VscVscode className="w-6 h-6 text-[#007ACC]" /> }, // <-- Burası değişti
+            { name: 'Discord', icon: <SiDiscord className="w-6 h-6 text-[#5865F2]" /> }
+          ].map((tool) => (
             <motion.div 
               whileHover={{ y: -5 }}
-              key={tool} 
-              className="bg-white border border-gray-100 p-4 rounded-xl shadow-sm flex flex-col items-center gap-3 cursor-default hover:border-blue-200 transition-colors"
+              key={tool.name} 
+              className="bg-white border border-gray-100 p-4 rounded-2xl shadow-sm flex flex-col items-center gap-3 cursor-default hover:border-blue-200 hover:shadow-md transition-all"
             >
-              <div className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center font-bold text-gray-600 text-sm">{tool[0]}</div>
-              <span className="text-[12px] font-semibold text-slate-700">{tool}</span>
+              <div className="w-12 h-12 rounded-xl bg-gray-50/80 border border-gray-100 flex items-center justify-center">
+                {tool.icon}
+              </div>
+              <span className="text-[13px] font-semibold text-slate-700">{tool.name}</span>
             </motion.div>
           ))}
         </div>
       </section>
+
+      {/* --- TESTIMONIALS & CTA BÖLÜMÜ --- */}
+      <section className="w-full bg-gradient-to-br from-[#e2e8f0] via-[#ede9fe] to-[#e0f2fe] py-24 px-6 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto flex flex-col items-center">
+          
+          {/* Üst Başlık ve Şirketler */}
+          <h3 className="text-sm font-semibold text-blue-600 tracking-wider uppercase mb-8">
+            Built for modern teams
+          </h3>
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16 text-gray-500 font-medium text-lg mb-16">
+            <span>Acme Corp</span>
+            <span>Nebula</span>
+            <span>Vertex</span>
+            <span>Orbit</span>
+            <span>Prism</span>
+          </div>
+
+          {/* Yorum Kartları */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full mb-24">
+            {/* Kart 1 */}
+            <div className="bg-white/60 backdrop-blur-sm border border-white/40 p-8 rounded-3xl shadow-sm">
+              <p className="text-blue-600 text-[17px] font-medium leading-relaxed mb-6">
+                "Flowbit cut our sprint planning from 2 hours to 15 minutes."
+              </p>
+              <div>
+                <h4 className="font-semibold text-blue-800">Sarah Chen</h4>
+                <p className="text-sm text-gray-500">Engineering Lead at Vertex</p>
+              </div>
+            </div>
+
+            {/* Kart 2 */}
+            <div className="bg-white/60 backdrop-blur-sm border border-white/40 p-8 rounded-3xl shadow-sm">
+              <p className="text-blue-600 text-[17px] font-medium leading-relaxed mb-6">
+                "Finally, a project tool that works the way engineers think."
+              </p>
+              <div>
+                <h4 className="font-semibold text-blue-800">Marcus Webb</h4>
+                <p className="text-sm text-gray-500">CTO at Orbit</p>
+              </div>
+            </div>
+
+            {/* Kart 3 */}
+            <div className="bg-white/60 backdrop-blur-sm border border-white/40 p-8 rounded-3xl shadow-sm">
+              <p className="text-blue-600 text-[17px] font-medium leading-relaxed mb-6">
+                "The AI suggestions alone save us 10+ hours per week."
+              </p>
+              <div>
+                <h4 className="font-semibold text-blue-800">Aisha Patel</h4>
+                <p className="text-sm text-gray-500">PM at Prism</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Alt CTA (Call to Action) Bölümü */}
+          <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-5xl gap-8">
+            <h2 className="text-4xl md:text-5xl font-bold text-blue-700 tracking-tight">
+              Start building faster today
+            </h2>
+            <div className="flex flex-col md:flex-row items-center gap-6">
+              <p className="text-gray-600 text-lg">
+                Join teams shipping 2x faster with Flowbit.
+              </p>
+              <button className="bg-[#4f46e5] hover:bg-[#4338ca] text-white font-semibold py-3 px-8 rounded-full transition-colors shadow-md">
+                Get Started
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* --- FOOTER BÖLÜMÜ --- */}
+      <footer className="w-full border-t border-gray-200 bg-white pt-16 pb-8 px-6 mt-12">
+        <div className="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-5 gap-8 mb-16">
+          
+          {/* Logo ve Açıklama (2 Kolon Kaplar) */}
+          <div className="col-span-2 flex flex-col gap-4">
+            <div className="flex items-center gap-2">
+              {/* Eğer kendi logonu kullanmak istersen buraya <img src="/flowbit_logo.png" /> ekleyebilirsin */}
+              <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center">
+                <span className="text-white text-xs font-bold">F</span>
+              </div>
+              <span className="text-xl font-bold text-gray-900 tracking-tight">FlovBit</span>
+            </div>
+            <p className="text-gray-500 text-[15px] w-3/4 leading-relaxed">
+              The issue tracking tool you'll actually enjoy using. Built for modern engineering teams.
+            </p>
+          </div>
+
+          {/* Product Kolonu */}
+          <div className="flex flex-col gap-4 mt-2 md:mt-0">
+            <h4 className="font-semibold text-gray-900 text-sm">Product</h4>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Features</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Integrations</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Pricing</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Changelog</a>
+          </div>
+
+          {/* Company Kolonu */}
+          <div className="flex flex-col gap-4 mt-2 md:mt-0">
+            <h4 className="font-semibold text-gray-900 text-sm">Company</h4>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">About Us</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Blog</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Careers</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Contact</a>
+          </div>
+
+          {/* Legal Kolonu */}
+          <div className="flex flex-col gap-4 mt-2 md:mt-0">
+            <h4 className="font-semibold text-gray-900 text-sm">Legal</h4>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</a>
+            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</a>
+          </div>
+        </div>
+
+        {/* Alt Çizgi ve Telif Hakkı */}
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-100 text-sm text-gray-400">
+          <p>© 2026 FlovBit Inc. All rights reserved.</p>
+          <div className="flex items-center gap-6 mt-4 md:mt-0">
+            <a href="#" className="hover:text-gray-600 transition-colors">Twitter</a>
+            <a href="#" className="hover:text-gray-600 transition-colors">GitHub</a>
+            <a href="#" className="hover:text-gray-600 transition-colors">Discord</a>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
