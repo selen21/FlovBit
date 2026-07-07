@@ -23,13 +23,36 @@ export default function AuthPage() {
     setIsLoading(true);
 
     if (isLogin) {
-      // GİRİŞ YAP (LOGIN) İŞLEMİ BURAYA GELECEK
-      console.log("Login deneniyor...", { email, password });
-      setTimeout(() => {
-        alert("Giriş yapma isteği gönderildi (Backend entegrasyonu beklendiği için simüle edildi).");
+      // GERÇEK GİRİŞ YAP (LOGIN) İŞLEMİ
+      try {
+        const response = await fetch("http://localhost:8081/api/v1/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            email: email,
+            password: password,
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          alert(data.message); // Java'dan gelen "Giriş başarılı! Hoş geldin..." mesajı
+          console.log("Login Başarılı:", data);
+          
+          // Giriş başarılıysa kullanıcıyı doğrudan Dashboard'a yönlendir
+          window.location.href = "/dashboard";
+        } else {
+          const errorData = await response.json();
+          alert("Hata: " + errorData.error); // Java'dan gelen "Hatalı şifre" vb. mesajlar
+        }
+      } catch (error) {
+        console.error("Sunucuya ulaşılamadı:", error);
+        alert("Sunucuya ulaşılamadı. Java projesi çalışıyor mu?");
+      } finally {
         setIsLoading(false);
-      }, 1000);
+      }
     } else {
+      // ... (Kayıt ol - register - bloğun burada aynen kalacak) ... else {
       // KAYIT OL (REGISTER) İŞLEMİ (Senin Java backend entegrasyonun)
       try {
         const response = await fetch("http://localhost:8081/api/v1/auth/register", {
