@@ -35,4 +35,21 @@ public class AuthService {
         // 3. Veri tabanına kaydet
         return userRepository.save(newUser);
     }
+
+    // YENİ EKLENEN GİRİŞ YAP (LOGIN) METODU
+    public String login(String email, String password) {
+        // 1. Kullanıcıyı e-posta adresinden bul
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Bu e-posta adresiyle kayıtlı bir kullanıcı bulunamadı!"));
+
+        // 2. Şifreyi kontrol et (Şu an düz metin kaydettiğin için equals kullanıyoruz)
+        boolean isPasswordMatch = password.equals(user.getPasswordHash());
+
+        if (!isPasswordMatch) {
+            throw new RuntimeException("Hatalı şifre girdiniz!");
+        }
+
+        // 3. Her şey doğruysa başarılı mesajı dön
+        return "Giriş başarılı! Hoş geldin, " + user.getUsername();
+    }
 }
