@@ -1,14 +1,9 @@
 "use client";
 import { useState } from "react";
-<<<<<<< HEAD
 import { motion, AnimatePresence } from "framer-motion";
 import { FiCheck, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-=======
-import { motion } from "framer-motion";
-import Link from "next/link";
->>>>>>> 6d053ed49cab3e8ddc0050069ae73ba08abed23d
 
 export default function AuthPage() {
   // Hangi sayfada olduğumuzu tutan State (false = Kayıt Ol, true = Giriş Yap)
@@ -27,7 +22,6 @@ export default function AuthPage() {
     e.preventDefault();
     setIsLoading(true);
 
-<<<<<<< HEAD
     if (isLogin) {
       // GİRİŞ YAP (LOGIN) İŞLEMİ BURAYA GELECEK
       console.log("Login deneniyor...", { email, password });
@@ -47,22 +41,7 @@ export default function AuthPage() {
             password: password,
           }),
         });
-=======
-    try {
-      
-      const response = await fetch("http://localhost:8081/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Artık statik metinler değil, state'ten gelen gerçek verileri gönderiyoruz
-          username: username,
-          email: email,
-          password: password,
-        }),
-      });
->>>>>>> 6d053ed49cab3e8ddc0050069ae73ba08abed23d
+   
 
         if (response.ok) {
           const data = await response.json();
