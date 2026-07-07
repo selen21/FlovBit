@@ -5,10 +5,31 @@ import {
   FiClock, FiAlertTriangle, FiCheckCircle, FiInbox, FiEye, FiPlus
 } from "react-icons/fi";
 import { TbLayoutDashboard } from "react-icons/tb";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState("dashboard");
+
+    // Backend'den gelecek veriler için state'ler
+    const [workspaces, setWorkspaces] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    // Sayfa yüklendiğinde verileri çek
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const res = await fetch("http://localhost:8081/api/v1/workspaces/user/chfdh@gmail.com");
+          const data = await res.json();
+          setWorkspaces(data);
+        } catch (err) {
+          console.error("Veriler çekilemedi:", err);
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      fetchData();
+    }, []);
+  
   return (
     <div className="flex h-screen w-full bg-[#0b0d12] text-[14px] font-sans antialiased text-[#e2e8f0] relative overflow-hidden">
 
@@ -351,24 +372,30 @@ export default function Dashboard() {
               </button>
             </div>
 
-            {/* Workspace Kartı */}
-            <div className="flex">
-              <div className="bg-[#0b0d12] border border-[#1e232d] rounded-xl p-5 w-[340px] flex flex-col gap-5">
-                <div className="flex items-center gap-3">
-                  <div className="text-[#5c9dff] font-bold text-[16px] w-6 text-center">W</div>
-                  <div className="flex flex-col">
-                    <span className="text-white text-[15px] font-bold">Workspace Name</span>
-                    <span className="text-[#848d9c] text-[12px] mt-0.5">Admin</span>
+            {/* Workspace Kartı (Dinamik) */}
+            <div className="flex gap-4">
+              {workspaces.length > 0 ? (
+                workspaces.map((w: any) => (
+                  <div key={w.id} className="bg-[#0b0d12] border border-[#1e232d] rounded-xl p-5 w-[340px] flex flex-col gap-5">
+                    <div className="flex items-center gap-3">
+                      <div className="text-[#5c9dff] font-bold text-[16px] w-6 text-center bg-[#1c2436] rounded">
+                        {w.name.charAt(0)}
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-white text-[15px] font-bold">{w.name}</span>
+                        <span className="text-[#848d9c] text-[12px] mt-0.5">Admin</span>
+                      </div>
+                    </div>
+                    <button className="text-[#5c9dff] text-[13px] font-medium text-left hover:underline w-max flex items-center gap-1">
+                      View projects <span>→</span>
+                    </button>
                   </div>
-                </div>
-                <button className="text-[#5c9dff] text-[13px] font-medium text-left hover:underline w-max flex items-center gap-1">
-                  View projects <span>→</span>
-                </button>
-              </div>
+                ))
+              ) : (
+                <p className="text-[#848d9c]">Henüz bir workspace yok. Oluşturmaya ne dersin?</p>
+              )}
             </div>
-
           </div>
-
         </div>
         )}
         {/* --- NOTIFICATIONS SEKMESİ --- */}
