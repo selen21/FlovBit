@@ -41,6 +41,7 @@ export default function AuthPage() {
             password: password,
           }),
         });
+   
 
         if (response.ok) {
           const data = await response.json();
@@ -186,7 +187,7 @@ export default function AuthPage() {
               Continue with GitHub
             </a>
           </div>
-          
+
           {/* Ayırıcı (Divider) */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex-1 border-t border-gray-200"></div>
