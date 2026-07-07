@@ -28,8 +28,13 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    // Sosyal girişler için nullable = true yaptık
+    @Column(nullable = true)
     private String passwordHash;
+
+    // Google/GitHub/Local ayrımı için
+    @Column(nullable = false)
+    private String provider = "LOCAL";
 
     @Column(nullable = false)
     private String role = "USER";
@@ -37,11 +42,9 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // BİR User'ın BİRDEN FAZLA Workspace'i olabilir (One-to-Many ilişkisi)
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Workspace> workspaces = new ArrayList<>();
 
-    // Nesne ilk kaydedildiğinde zaman damgasını otomatik atar
     @PrePersist
     protected void onCreate() {
         this.createdAt = LocalDateTime.now();
@@ -59,6 +62,9 @@ public class User {
 
     public String getPasswordHash() { return passwordHash; }
     public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+
+    public String getProvider() { return provider; }
+    public void setProvider(String provider) { this.provider = provider; }
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
