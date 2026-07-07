@@ -1,14 +1,9 @@
 "use client";
 import { useState } from "react";
-<<<<<<< HEAD
 import { motion, AnimatePresence } from "framer-motion";
 import { FiCheck, FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
-=======
-import { motion } from "framer-motion";
-import Link from "next/link";
->>>>>>> 6d053ed49cab3e8ddc0050069ae73ba08abed23d
 
 export default function AuthPage() {
   // Hangi sayfada olduğumuzu tutan State (false = Kayıt Ol, true = Giriş Yap)
@@ -27,7 +22,6 @@ export default function AuthPage() {
     e.preventDefault();
     setIsLoading(true);
 
-<<<<<<< HEAD
     if (isLogin) {
       // GİRİŞ YAP (LOGIN) İŞLEMİ BURAYA GELECEK
       console.log("Login deneniyor...", { email, password });
@@ -38,7 +32,7 @@ export default function AuthPage() {
     } else {
       // KAYIT OL (REGISTER) İŞLEMİ (Senin Java backend entegrasyonun)
       try {
-        const response = await fetch("http://localhost:8080/api/v1/auth/register", {
+        const response = await fetch("http://localhost:8081/api/v1/auth/register", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -47,22 +41,6 @@ export default function AuthPage() {
             password: password,
           }),
         });
-=======
-    try {
-      
-      const response = await fetch("http://localhost:8081/api/v1/auth/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Artık statik metinler değil, state'ten gelen gerçek verileri gönderiyoruz
-          username: username,
-          email: email,
-          password: password,
-        }),
-      });
->>>>>>> 6d053ed49cab3e8ddc0050069ae73ba08abed23d
 
         if (response.ok) {
           const data = await response.json();
@@ -193,16 +171,22 @@ export default function AuthPage() {
 
           {/* Sosyal Giriş Butonları */}
           <div className="flex flex-col gap-3 mb-6">
-            <button className="flex items-center justify-center gap-3 w-full border border-gray-200 rounded-xl py-2.5 text-[15px] font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+            <a 
+              href="http://localhost:8081/oauth2/authorization/google"
+              className="flex items-center justify-center gap-3 w-full border border-gray-200 rounded-xl py-2.5 text-[15px] font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            >
               <FcGoogle className="text-[20px]" />
               Continue with Google
-            </button>
-            <button className="flex items-center justify-center gap-3 w-full border border-gray-200 rounded-xl py-2.5 text-[15px] font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+            </a>
+            <a 
+              href="http://localhost:8081/oauth2/authorization/github"
+              className="flex items-center justify-center gap-3 w-full border border-gray-200 rounded-xl py-2.5 text-[15px] font-medium text-gray-700 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+            >
               <FaGithub className="text-[19px]" />
               Continue with GitHub
-            </button>
+            </a>
           </div>
-
+          
           {/* Ayırıcı (Divider) */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex-1 border-t border-gray-200"></div>
