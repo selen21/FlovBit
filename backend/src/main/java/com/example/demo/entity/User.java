@@ -1,12 +1,16 @@
 package com.example.demo.entity; 
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
@@ -33,6 +37,10 @@ public class User {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    // BİR User'ın BİRDEN FAZLA Workspace'i olabilir (One-to-Many ilişkisi)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Workspace> workspaces = new ArrayList<>();
+
     // Nesne ilk kaydedildiğinde zaman damgasını otomatik atar
     @PrePersist
     protected void onCreate() {
@@ -56,4 +64,8 @@ public class User {
     public void setRole(String role) { this.role = role; }
 
     public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public List<Workspace> getWorkspaces() { return workspaces; }
+    public void setWorkspaces(List<Workspace> workspaces) { this.workspaces = workspaces; }
 }
