@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,24 @@ public class AuthController {
         } catch (RuntimeException e) {
             // Eğer email zaten varsa, servisimizden gelen hatayı 400 Bad Request olarak Selen'e ilet
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // YENİ EKLENEN GİRİŞ YAP (LOGIN) UÇ NOKTASI
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
+        try {
+            String email = request.get("email");
+            String password = request.get("password");
+            
+            // AuthService'deki login metodumuzu çağırıyoruz
+            String resultMessage = authService.login(email, password);
+            
+            // Başarılı olursa 200 OK ve mesajı JSON formatında dönüyoruz
+            return ResponseEntity.ok(Collections.singletonMap("message", resultMessage));
+        } catch (RuntimeException e) {
+            // Hata olursa 400 Bad Request ve hata mesajını JSON olarak dönüyoruz
+            return ResponseEntity.badRequest().body(Collections.singletonMap("error", e.getMessage()));
         }
     }
 }
