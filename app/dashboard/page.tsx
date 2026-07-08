@@ -9,18 +9,38 @@ import { useState, useEffect } from "react";
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState("dashboard");
-
-    // Backend'den gelecek veriler için state'ler
-    const [workspaces, setWorkspaces] = useState([]);
+    const [workspaces, setWorkspaces] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    // Kullanıcının e-posta adresini arayüzde (sol altta) göstermek için state
+    const [userEmail, setUserEmail] = useState(""); 
 
-    // Sayfa yüklendiğinde verileri çek
+    // 1. Sayfa yüklendiğinde Verileri (Workspaces) Çek
     useEffect(() => {
       const fetchData = async () => {
+        const token = localStorage.getItem("token");
+        const email = localStorage.getItem("email");
+
+        // Token veya email yoksa giriş yapılmamış demektir, ana sayfaya at
+        if (!token || !email) {
+            window.location.href = "/";
+            return;
+        }
+        
+        setUserEmail(email);
+
         try {
-          const res = await fetch("http://localhost:8081/api/v1/workspaces/user/chfdh@gmail.com");
-          const data = await res.json();
-          setWorkspaces(data);
+          const res = await fetch(`http://localhost:8081/api/v1/workspaces/user/${email}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}` // Güvenlik biletini ekledik
+            }
+          });
+          
+          if (res.ok) {
+              const data = await res.json();
+              setWorkspaces(data);
+          }
         } catch (err) {
           console.error("Veriler çekilemedi:", err);
         } finally {
@@ -29,6 +49,85 @@ export default function Dashboard() {
       };
       fetchData();
     }, []);
+
+    // 2. Yeni Çalışma Alanı (Workspace) Oluşturma Fonksiyonu
+    const handleCreateWorkspace = async () => {
+        // Tasarımı bozmamak için şimdilik tarayıcının prompt penceresini kullanıyoruz
+        const workspaceName = window.prompt("Yeni Çalışma Alanı (Workspace) adını girin:");
+        if (!workspaceName) return; // İptal edilirse veya boş girilirse çık
+
+        const token = localStorage.getItem("token");
+        const email = localStorage.getItem("email");
+
+        try {
+            const response = await fetch("http://localhost:8081/api/v1/workspaces/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    name: workspaceName,
+                    email: email
+                })
+            });
+
+            if (response.ok) {
+                const newWorkspace = await response.json();
+                alert("Çalışma alanı başarıyla oluşturuldu!");
+                // Sayfayı yenilemeden yeni çalışma alanını listeye ekliyoruz
+                setWorkspaces([...workspaces, newWorkspace]); 
+            } else {
+                alert("Oluşturulurken bir hata oluştu.");
+            }
+        } catch (error) {
+            console.error("Workspace oluşturma hatası:", error);
+        }
+    };
+
+    // 3. Yeni Görev (Issue) Ekleme Fonksiyonu
+    const handleCreateIssue = async () => {
+        if (workspaces.length === 0) {
+            alert("Lütfen önce bir Çalışma Alanı (Workspace) oluşturun!");
+            return;
+        }
+
+        const issueTitle = window.prompt("Yeni Görev (Issue) adını girin:");
+        if (!issueTitle) return;
+
+        const token = localStorage.getItem("token");
+        // Şimdilik varsayılan olarak kullanıcının ilk çalışma alanına ekliyoruz
+        const defaultWorkspaceId = workspaces[0].id; 
+
+        try {
+            const response = await fetch("http://localhost:8081/api/v1/issues/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    title: issueTitle,
+                    status: "To Do",
+                    priority: "High",
+                    workspaceId: defaultWorkspaceId
+                })
+            });
+
+            if (response.ok) {
+                alert("Görev başarıyla eklendi!");
+            }
+        } catch (error) {
+            console.error("Görev ekleme hatası:", error);
+        }
+    };
+
+    // 4. Çıkış Yapma (Logout) Fonksiyonu
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("email");
+        window.location.href = "/"; // Çıkış yapınca kayıt ekranına yönlendir
+    };
   
   return (
     <div className="flex h-screen w-full bg-[#0b0d12] text-[14px] font-sans antialiased text-[#e2e8f0] relative overflow-hidden">
@@ -47,12 +146,18 @@ export default function Dashboard() {
             <div className="flex flex-col gap-1">
               <div className="relative flex items-center w-full bg-[#1c2436] text-[#5c9dff] rounded-lg cursor-pointer">
                 <div className="absolute left-[-12px] top-1/2 -translate-y-1/2 w-[4px] h-[20px] bg-[#5c9dff] rounded-r-md"></div>
-                <button className="flex items-center gap-3 w-full pl-3 pr-3 py-2 font-medium">
+                <button 
+                  onClick={() => setActiveTab("dashboard")}
+                  className="flex items-center gap-3 w-full pl-3 pr-3 py-2 font-medium"
+                >
                   <TbLayoutDashboard className="text-[20px]" />
                   <span>Dashboard</span>
                 </button>
               </div>
-              <button className="flex items-center gap-3 w-full px-3 py-2 text-[#949eaf] hover:text-white hover:bg-[#1a1e27] rounded-lg transition-colors font-medium">
+              <button 
+                onClick={() => setActiveTab("notifications")}
+                className="flex items-center gap-3 w-full px-3 py-2 text-[#949eaf] hover:text-white hover:bg-[#1a1e27] rounded-lg transition-colors font-medium"
+              >
                 <FiBell className="text-[18px]" />
                 <span>Notifications</span>
               </button>
@@ -77,10 +182,15 @@ export default function Dashboard() {
         </div>
         <div className="border-t border-[#1e232d] p-5 flex flex-col gap-5">
           <div className="flex flex-col px-1">
-            <span className="font-semibold text-white text-[14px]">vhhkg</span>
-            <span className="text-[#848d9c] text-[13px]">chfdh@gmail.com</span>
+            <span className="font-semibold text-white text-[14px]">User</span>
+            {/* Dinamik E-posta Gösterimi */}
+            <span className="text-[#848d9c] text-[13px] truncate">{userEmail || "Loading..."}</span>
           </div>
-          <button className="flex items-center gap-3 w-full px-1 text-[#949eaf] hover:text-white transition-colors font-medium">
+          {/* Çıkış Yap Butonunu Bağladık */}
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-1 text-[#949eaf] hover:text-white transition-colors font-medium"
+          >
             <FiLogOut className="text-[18px]" />
             <span>Logout</span>
           </button>
@@ -361,24 +471,28 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* --- YENİ EKLENEN KISIM: YOUR WORKSPACES --- */}
+          {/* --- YOUR WORKSPACES --- */}
           <div className="mb-10">
             
-            {/* Başlık ve Buton */}
             <div className="flex justify-between items-center mb-5">
               <h2 className="text-white text-[18px] font-bold tracking-wide">Your Workspaces</h2>
-              <button className="bg-[#5c9dff] text-[#0b0d12] px-4 py-2 rounded-lg font-semibold text-[13px] hover:bg-[#4a8bee] transition-colors">
+              {/* Workspace Oluşturma Butonunu Bağladık */}
+              <button 
+                onClick={handleCreateWorkspace}
+                className="bg-[#5c9dff] text-[#0b0d12] px-4 py-2 rounded-lg font-semibold text-[13px] hover:bg-[#4a8bee] transition-colors"
+              >
                 Create Workspace
               </button>
             </div>
 
-            {/* Workspace Kartı (Dinamik) */}
             <div className="flex gap-4">
-              {workspaces.length > 0 ? (
+              {isLoading ? (
+                  <p className="text-[#848d9c]">Yükleniyor...</p>
+              ) : workspaces.length > 0 ? (
                 workspaces.map((w: any) => (
                   <div key={w.id} className="bg-[#0b0d12] border border-[#1e232d] rounded-xl p-5 w-[340px] flex flex-col gap-5">
                     <div className="flex items-center gap-3">
-                      <div className="text-[#5c9dff] font-bold text-[16px] w-6 text-center bg-[#1c2436] rounded">
+                      <div className="text-[#5c9dff] font-bold text-[16px] w-6 text-center bg-[#1c2436] rounded uppercase">
                         {w.name.charAt(0)}
                       </div>
                       <div className="flex flex-col">
@@ -398,11 +512,11 @@ export default function Dashboard() {
           </div>
         </div>
         )}
+        
         {/* --- NOTIFICATIONS SEKMESİ --- */}
         {activeTab === "notifications" && (
           <div className="p-8 max-w-[1000px] mx-auto w-full animate-in fade-in duration-300">
             
-            {/* Üst Kısım: Başlık ve Toggle Butonu */}
             <div className="flex justify-between items-center mb-8">
               <h1 className="text-white text-[26px] font-bold tracking-tight">Notifications</h1>
               
@@ -412,7 +526,6 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Empty State (Boş Durum) Kartı */}
             <div className="bg-[#11141b] border border-[#1e232d] rounded-2xl flex flex-col items-center justify-center h-[340px]">
               <div className="w-[52px] h-[52px] bg-[#1c2436] rounded-[16px] flex items-center justify-center mb-5">
                 <FiBell className="text-[#848d9c] text-[22px]" />
@@ -424,8 +537,11 @@ export default function Dashboard() {
           </div>
         )}
         
-        {/* --- FLOATING ACTION BUTTON (FAB) --- */}
-        <button className="fixed bottom-10 right-10 w-14 h-14 bg-[#5c9dff] text-[#0b0d12] rounded-full flex items-center justify-center hover:bg-[#4a8bee] transition-colors shadow-lg z-50">
+        {/* --- FLOATING ACTION BUTTON (FAB) - GÖREV EKLEME BUTONU --- */}
+        <button 
+          onClick={handleCreateIssue}
+          className="fixed bottom-10 right-10 w-14 h-14 bg-[#5c9dff] text-[#0b0d12] rounded-full flex items-center justify-center hover:bg-[#4a8bee] transition-colors shadow-lg z-50"
+        >
           <FiPlus className="text-[26px]" />
         </button>
 
