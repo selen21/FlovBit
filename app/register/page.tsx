@@ -96,7 +96,7 @@ export default function AuthPage() {
           <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100">
             <span className="text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-blue-600 font-bold text-lg italic">F</span>
           </div>
-          <span className="font-semibold text-xl tracking-wide text-gray-900">FlowBit</span>
+          <span className="font-semibold text-xl tracking-wide text-gray-900">FlovBit</span>
         </div>
 
         {/* Dinamik Metin Alanı (Framer Motion ile geçişli) */}
@@ -303,10 +303,8 @@ export default function AuthPage() {
               By creating an account, you agree to our <a href="#" className="text-[#1d4ed8] hover:underline">Terms of Service</a> and <a href="#" className="text-[#1d4ed8] hover:underline">Privacy Policy</a>
             </p>
           )}
-
         </div>
       </div>
-
     </div>
   );
 }
