@@ -143,6 +143,25 @@ export default function Dashboard() {
         localStorage.removeItem("email");
         window.location.href = "/"; // Çıkış yapınca kayıt ekranına yönlendir
     };
+
+  // --- DİNAMİK HESAPLAMALAR ---
+  
+  // 1. Projedeki Toplam Görevleri (Total Issues) Hesapla
+  const totalIssuesCount = workspaces.reduce((total, workspace) => {
+    // Eğer workspace'in içinde issues listesi varsa uzunluğunu al, yoksa 0 ekle
+    return total + (workspace.issues ? workspace.issues.length : 0);
+  }, 0);
+
+  // 2. Sana Ait / Aktif Görevleri (My Issues) Hesapla
+  // Örneğin: "Done" (Tamamlandı) olmayan görevleri sayalım
+  const activeIssuesCount = workspaces.reduce((total, workspace) => {
+    if (!workspace.issues) return total;
+    
+    const activeInWorkspace = workspace.issues.filter((issue: any) => issue.status !== "Done").length;
+    return total + activeInWorkspace;
+  }, 0);
+
+  // -----------------------------
   
   return (
     <div className="flex h-screen w-full bg-[#0b0d12] text-[14px] font-sans antialiased text-[#e2e8f0] relative overflow-hidden">
@@ -255,7 +274,8 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex items-end gap-2">
-                <span className="text-white text-[28px] font-bold leading-none">0</span>
+                {/* DİNAMİK VERİ EKLENDİ */}
+                <span className="text-white text-[28px] font-bold leading-none">{activeIssuesCount}</span>
                 <span className="text-[#848d9c] text-[13px] mb-[3px]">Assigned to you</span>
               </div>
             </div>
@@ -267,7 +287,8 @@ export default function Dashboard() {
                 </div>
               </div>
               <div className="flex items-end gap-2">
-                <span className="text-white text-[28px] font-bold leading-none">1</span>
+                {/* DİNAMİK VERİ EKLENDİ */}
+                <span className="text-white text-[28px] font-bold leading-none">{totalIssuesCount}</span>
                 <span className="text-[#848d9c] text-[13px] mb-[3px]">In this project</span>
               </div>
             </div>
@@ -402,7 +423,8 @@ export default function Dashboard() {
               <div className="p-5 border-b border-[#1e232d]">
                 <div className="flex justify-between items-center mb-5">
                   <h2 className="text-white text-[16px] font-bold tracking-wide">My Issues</h2>
-                  <span className="text-[#5c9dff] text-[13px] font-semibold">0</span>
+                  {/* DİNAMİK VERİ EKLENDİ */}
+                  <span className="text-[#5c9dff] text-[13px] font-semibold">{activeIssuesCount}</span>
                 </div>
                 <div className="flex flex-col gap-3">
                   <div className="flex items-center gap-4 text-[13px]">

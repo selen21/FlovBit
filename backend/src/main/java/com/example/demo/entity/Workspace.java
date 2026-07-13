@@ -33,10 +33,10 @@ public class Workspace {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // BİR Workspace, BİR User'a aittir (Many-to-One ilişkisi)
+    // BİR Workspace, BİR User'a aittir
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore // Sonsuz döngüye girmemesi için JSON çevirisinde kullanıcıyı gizliyoruz
+    @JsonIgnore
     private User user;
 
     // BİR Workspace'in BİRDEN FAZLA Görevi (Issue) olabilir

@@ -26,24 +26,22 @@ public class Issue {
     @Column(nullable = false)
     private String title;
 
-    // Varsayılan durum: To Do (Yapılacak)
     @Column(nullable = false)
     private String status = "To Do"; 
 
-    // Varsayılan öncelik: Low (Düşük)
     @Column(nullable = false)
     private String priority = "Low"; 
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // BİR Görev, BİR Workspace'e aittir (Many-to-One)
+    // BİR Görev, BİR Workspace'e aittir
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "workspace_id", nullable = false)
-    @JsonIgnore
+    @JsonIgnore // JSON döngüsünü engeller
     private Workspace workspace;
 
-    // Görevin kime atandığını tutmak için (Opsiyonel)
+    // Görevin kime atandığını tutmak için
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "assignee_id")
     @JsonIgnore
