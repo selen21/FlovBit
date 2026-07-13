@@ -22,7 +22,7 @@ export default function AuthPage() {
     e.preventDefault();
     setIsLoading(true);
 
-    if (isLogin) {
+   if (isLogin) {
       // GERÇEK GİRİŞ YAP (LOGIN) İŞLEMİ
       try {
         const response = await fetch("http://localhost:8081/api/v1/auth/login", {
@@ -36,14 +36,19 @@ export default function AuthPage() {
 
         if (response.ok) {
           const data = await response.json();
-          alert(data.message); // Java'dan gelen "Giriş başarılı! Hoş geldin..." mesajı
-          console.log("Login Başarılı:", data);
+          alert(data.message); // Java'dan gelen başarılı giriş mesajı
           
-          // Giriş başarılıysa kullanıcıyı doğrudan Dashboard'a yönlendir
+          // İŞTE BÜYÜ BURADA: Java'nın ürettiği JWT Token'ı tarayıcıya kaydediyoruz
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("email", email); // E-postayı da Dashboard'da kullanmak için kaydediyoruz
+          
+          console.log("Token başarıyla kaydedildi:", data.token);
+          
+          // Giriş başarılıysa kullanıcıyı Dashboard'a yönlendir
           window.location.href = "/dashboard";
         } else {
           const errorData = await response.json();
-          alert("Hata: " + errorData.error); // Java'dan gelen "Hatalı şifre" vb. mesajlar
+          alert("Hata: " + errorData.error); 
         }
       } catch (error) {
         console.error("Sunucuya ulaşılamadı:", error);
@@ -85,6 +90,7 @@ export default function AuthPage() {
     }
   };
 
+  
   return (
     <div className="flex min-h-screen w-full bg-white font-sans text-gray-900">
       
