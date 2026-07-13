@@ -14,41 +14,56 @@ export default function Dashboard() {
     // Kullanıcının e-posta adresini arayüzde (sol altta) göstermek için state
     const [userEmail, setUserEmail] = useState(""); 
 
-    // 1. Sayfa yüklendiğinde Verileri (Workspaces) Çek
-    useEffect(() => {
-      const fetchData = async () => {
-        const token = localStorage.getItem("token");
-        const email = localStorage.getItem("email");
+   // 1. Sayfa yüklendiğinde Verileri (Workspaces) Çek
+  useEffect(() => {
+    const fetchData = async () => {
+      // --- YENİ EKLENEN KISIM: URL'den Google/GitHub biletini yakalama ---
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get("token");
+      const urlEmail = urlParams.get("email");
 
-        // Token veya email yoksa giriş yapılmamış demektir, ana sayfaya at
-        if (!token || !email) {
-            window.location.href = "/";
-            return;
-        }
-        
-        setUserEmail(email);
+      if (urlToken && urlEmail) {
+        localStorage.setItem("token", urlToken);
+        localStorage.setItem("email", urlEmail);
+        // Parametreleri URL'den silerek temiz ve güvenli bir görünüm sağlıyoruz
+        window.history.replaceState({}, document.title, "/dashboard");
+      }
+      // -------------------------------------------------------------------
 
-        try {
-          const res = await fetch(`http://localhost:8081/api/v1/workspaces/user/${email}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-                "Authorization": `Bearer ${token}` // Güvenlik biletini ekledik
-            }
-          });
-          
-          if (res.ok) {
-              const data = await res.json();
-              setWorkspaces(data);
+      // SENİN ESKİ VE ÇALIŞAN KODUN BURADAN İTİBAREN AYNEN DEVAM EDİYOR:
+      const token = localStorage.getItem("token");
+      const email = localStorage.getItem("email");
+
+      // Token veya email yoksa giriş yapılmamış demektir, ana sayfaya at
+      if (!token || !email) {
+          window.location.href = "/";
+          return;
+      }
+      
+      setUserEmail(email);
+
+      try {
+        const res = await fetch(`http://localhost:8081/api/v1/workspaces/user/${email}`, {
+          method: "GET",
+          headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}` // Güvenlik biletini ekledik
           }
-        } catch (err) {
-          console.error("Veriler çekilemedi:", err);
-        } finally {
-          setIsLoading(false);
+        });
+        
+        if (res.ok) {
+            const data = await res.json();
+            setWorkspaces(data);
         }
-      };
-      fetchData();
-    }, []);
+      } catch (err) {
+        console.error("Veriler çekilemedi:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchData();
+  }, []);
 
     // 2. Yeni Çalışma Alanı (Workspace) Oluşturma Fonksiyonu
     const handleCreateWorkspace = async () => {

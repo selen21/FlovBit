@@ -15,6 +15,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.example.demo.security.JwtFilter;
+import com.example.demo.security.OAuth2SuccessHandler; // YENİ: Başarılı giriş yakalayıcıyı import ettik
 
 @Configuration
 @EnableWebSecurity
@@ -23,6 +24,10 @@ public class SecurityConfig {
     // Güvenlik görevlimizi (Bilet kontrolcüsü) içeri alıyoruz
     @Autowired
     private JwtFilter jwtFilter; 
+
+    // YENİ: Google/GitHub başarılı giriş yöneticimizi içeri alıyoruz
+    @Autowired
+    private OAuth2SuccessHandler oAuth2SuccessHandler; 
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -48,10 +53,10 @@ public class SecurityConfig {
             // Bilet kontrolcümüzü (JwtFilter) resmi olarak sisteme dahil ediyoruz
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 
-            // 4. İŞTE YENİ EKLENEN KISIM: Google ve GitHub ile girişi aktif ediyoruz
+            // 4. İŞTE GÜNCELLENEN KISIM: Google ve GitHub ile girişi aktif ediyoruz
             .oauth2Login(oauth2 -> oauth2
-                // Başarılı girişten sonra kullanıcıyı doğrudan Next.js (Ön Yüz) ana sayfasına ışınla!
-                .defaultSuccessUrl("http://localhost:3000/", true)
+                // YENİ: Sabit bir URL yerine, bizim yazdığımız özel sınıfı kullan diyoruz
+                .successHandler(oAuth2SuccessHandler)
             );
         
         return http.build();
