@@ -1,10 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function SettingsPage() {
   // Profil State'leri
-  const [name, setName] = useState("vhhkg");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
 
@@ -17,6 +18,15 @@ export default function SettingsPage() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    // Sayfa yüklendiğinde localStorage'dan gerçek bilgileri al
+    const storedEmail = localStorage.getItem("email");
+    if (storedEmail) {
+      setEmail(storedEmail);
+      setName(storedEmail.split('@')[0]); // Default isim
+    }
+  }, []);
 
   // Profil Kaydetme Simülasyonu
   const handleSaveProfile = () => {
@@ -42,7 +52,7 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="p-8 max-w-[800px] mx-auto w-full pb-24 font-sans">
+    <div className="p-8 max-w-[800px] mx-auto w-full pb-24 font-sans animate-in fade-in duration-300">
       
       {/* Üst Başlık */}
       <div className="mb-10">
@@ -62,10 +72,10 @@ export default function SettingsPage() {
 
           <div className="bg-[#11141b] border border-[#1e232d] rounded-xl p-6 md:p-8">
             
-            {/* Avatar Upload (Videodaki gibi) */}
+            {/* Avatar Upload */}
             <div className="flex items-center gap-6 mb-8">
               <div className="w-[72px] h-[72px] bg-[#1e232d] rounded-full flex items-center justify-center text-white text-[28px] font-bold border border-[#2a3140]">
-                {name.charAt(0).toUpperCase()}
+                {name ? name.charAt(0).toUpperCase() : "U"}
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
@@ -91,11 +101,11 @@ export default function SettingsPage() {
               />
             </div>
 
-            {/* Email Alanı (Kilitli - Videodaki gibi) */}
+            {/* Email Alanı (Kilitli) */}
             <div className="mb-6">
               <label className="block text-[#e2e8f0] text-[14px] font-medium mb-2">Email</label>
               <div className="flex items-center justify-between w-full bg-[#0b0d12] border border-[#1e232d] rounded-lg px-4 py-2.5 opacity-70 cursor-not-allowed">
-                <span className="text-[#e2e8f0] text-[14px]">chfdh@gmail.com</span>
+                <span className="text-[#e2e8f0] text-[14px]">{email || "Loading..."}</span>
                 <span className="text-[#848d9c] text-[12px] font-medium flex items-center gap-1">
                   Locked
                 </span>

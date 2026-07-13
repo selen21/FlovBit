@@ -6,6 +6,7 @@ import {
 import { TbLayoutDashboard } from "react-icons/tb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function DashboardLayout({
   children,
@@ -13,6 +14,27 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname(); // Şu an hangi URL'de olduğumuzu bulur
+  
+  // --- DİNAMİK KULLANICI BİLGİLERİ İÇİN STATE'LER ---
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+
+  useEffect(() => {
+    // Sayfa yüklendiğinde gerçek kullanıcının emailini localStorage'dan al
+    const email = localStorage.getItem("email");
+    if (email) {
+        setUserEmail(email);
+        // Şimdilik isim olarak emailin @'ten önceki kısmını alıyoruz
+        setUserName(email.split('@')[0]); 
+    }
+  }, []);
+
+  // --- ÇIKIŞ YAPMA (LOGOUT) FONKSİYONU ---
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    window.location.href = "/"; // Çıkış yapınca kayıt ekranına yönlendir
+  };
 
   return (
     <div className="flex h-screen w-full bg-[#0b0d12] text-[14px] font-sans antialiased text-[#e2e8f0] relative overflow-hidden">
@@ -152,11 +174,15 @@ export default function DashboardLayout({
           </div>
           
         <div className="border-t border-[#1e232d] p-5 flex flex-col gap-5">
-          <div className="flex flex-col px-1">
-            <span className="font-semibold text-white text-[14px]">vhhkg</span>
-            <span className="text-[#848d9c] text-[13px]">chfdh@gmail.com</span>
+          <div className="flex flex-col px-1 w-full overflow-hidden">
+            {/* Dinamik Kullanıcı Bilgileri */}
+            <span className="font-semibold text-white text-[14px] truncate">{userName || "Loading..."}</span>
+            <span className="text-[#848d9c] text-[13px] truncate">{userEmail || "Loading..."}</span>
           </div>
-          <button className="flex items-center gap-3 w-full px-1 text-[#949eaf] hover:text-white transition-colors font-medium">
+          <button 
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-1 text-[#949eaf] hover:text-white transition-colors font-medium"
+          >
             <FiLogOut className="text-[18px]" />
             <span>Logout</span>
           </button>
