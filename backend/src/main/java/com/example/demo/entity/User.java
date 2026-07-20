@@ -54,6 +54,9 @@ public class User {
         this.createdAt = LocalDateTime.now();
     }
 
+    @Column(name = "avatar_url")
+    private String avatarUrl;
+
     // --- Getter ve Setter Metotları ---
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -75,6 +78,9 @@ public class User {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
 
     public List<Workspace> getWorkspaces() { return workspaces; }
     public void setWorkspaces(List<Workspace> workspaces) { this.workspaces = workspaces; }

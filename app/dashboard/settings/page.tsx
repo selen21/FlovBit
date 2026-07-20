@@ -1,13 +1,20 @@
 "use client";
 import { useState, useEffect } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = "https://eykakqrvaofqelodwkdu.supabase.co"; 
+const supabaseKey = "sb_publishable_qNwFw4zBd2O_hpQTvqBmVQ_mkUE4y5N"; 
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 export default function SettingsPage() {
   // Profil State'leri
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   // Şifre State'leri
   const [currentPassword, setCurrentPassword] = useState("");
@@ -25,30 +32,126 @@ export default function SettingsPage() {
     if (storedEmail) {
       setEmail(storedEmail);
       setName(storedEmail.split('@')[0]); // Default isim
+      
+      const storedAvatar = localStorage.getItem("avatarUrl");
+      if(storedAvatar) setAvatarUrl(storedAvatar);
     }
   }, []);
 
-  // Profil Kaydetme Simülasyonu
-  const handleSaveProfile = () => {
-    setIsSaving(true);
-    setTimeout(() => {
-      setIsSaving(false);
-      setIsSaved(true);
-      // 3 saniye sonra 'Saved' yazısı kaybolsun
-      setTimeout(() => setIsSaved(false), 3000);
-    }, 1000);
+  // --- SUPABASE FOTOĞRAF YÜKLEME ---
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${email.split('@')[0]}-${Math.random()}.${fileExt}`;
+
+    try {
+      // Supabase 'avatars' bucket'ına dosyayı yükle
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(fileName, file);
+
+      if (uploadError) {
+        throw uploadError;
+      }
+
+      // Yüklenen dosyanın herkese açık (public) linkini al
+      const { data } = supabase.storage.from('avatars').getPublicUrl(fileName);
+      setAvatarUrl(data.publicUrl);
+      
+      // Avatar URL'sini veritabanına kaydetmek için profil kaydetme fonksiyonunu tetikliyoruz
+      handleSaveProfileWithAvatar(data.publicUrl);
+
+    } catch (error) {
+      console.error("Yükleme hatası:", error);
+      alert("Fotoğraf yüklenemedi! Supabase 'avatars' adında public bir bucket oluşturduğunuzdan emin olun.");
+    } finally {
+      setIsUploading(false);
+    }
   };
 
-  // Şifre Değiştirme Simülasyonu
-  const handleChangePassword = () => {
+  // --- GERÇEK API İLE PROFIL KAYDETME ---
+  const handleSaveProfileWithAvatar = async (newAvatarUrl = avatarUrl) => {
+    setIsSaving(true);
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch("http://localhost:8081/api/v1/users/update-profile", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ 
+          email: email, 
+          name: name,
+          avatarUrl: newAvatarUrl // Yeni eklenen URL backend'e gidiyor
+        })
+      });
+
+      if (response.ok) {
+        setIsSaved(true);
+        localStorage.setItem("avatarUrl", newAvatarUrl); // Hızlı yüklenmesi için locale de atıyoruz
+        // 3 saniye sonra 'Saved' yazısı kaybolsun
+        setTimeout(() => setIsSaved(false), 3000);
+      } else {
+        alert("Profil güncellenirken bir hata oluştu.");
+      }
+    } catch (error) {
+      console.error("Profil güncelleme hatası:", error);
+      alert("Sunucuya ulaşılamadı.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveProfile = () => {
+    handleSaveProfileWithAvatar(avatarUrl);
+  };
+
+  // --- GERÇEK API İLE ŞİFRE DEĞİŞTİRME ---
+  const handleChangePassword = async () => {
     if (newPassword !== confirmPassword) {
       alert("New passwords do not match!");
       return;
     }
-    alert("Password updated successfully!");
-    setCurrentPassword("");
-    setNewPassword("");
-    setConfirmPassword("");
+
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await fetch("http://localhost:8081/api/v1/users/change-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({ 
+          email: email, 
+          currentPassword: currentPassword, 
+          newPassword: newPassword 
+        })
+      });
+
+      if (response.ok) {
+        alert("Password updated successfully!");
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+      } else {
+        const errorMsg = await response.text();
+        alert(errorMsg || "Şifre değiştirilirken bir hata oluştu.");
+      }
+    } catch (error) {
+      console.error("Şifre değiştirme hatası:", error);
+      alert("Sunucuya ulaşılamadı.");
+    }
+  };
+
+  // Profil Fotoğrafını Kaldırma Simülasyonu
+  const handleRemoveImage = () => {
+    setAvatarUrl("");
+    localStorage.removeItem("avatarUrl");
+    handleSaveProfileWithAvatar(""); // Veritabanında da sıfırla
   };
 
   return (
@@ -74,15 +177,29 @@ export default function SettingsPage() {
             
             {/* Avatar Upload */}
             <div className="flex items-center gap-6 mb-8">
-              <div className="w-[72px] h-[72px] bg-[#1e232d] rounded-full flex items-center justify-center text-white text-[28px] font-bold border border-[#2a3140]">
-                {name ? name.charAt(0).toUpperCase() : "U"}
+              <div className="w-[72px] h-[72px] bg-[#1e232d] rounded-full flex items-center justify-center text-white text-[28px] font-bold border border-[#2a3140] overflow-hidden">
+                {avatarUrl ? (
+                  <img src={avatarUrl} alt="Avatar" className="w-full h-full object-cover" />
+                ) : (
+                  name ? name.charAt(0).toUpperCase() : "U"
+                )}
               </div>
               <div>
                 <div className="flex items-center gap-3 mb-2">
-                  <button className="bg-transparent border border-[#2a3140] text-white px-4 py-1.5 rounded-md text-[13px] font-medium hover:bg-[#1e232d] transition-colors">
-                    Upload Image
-                  </button>
-                  <button className="text-[#ef4444] text-[13px] font-medium hover:text-[#dc2626] transition-colors">
+                  <label className="bg-transparent border border-[#2a3140] text-white px-4 py-1.5 rounded-md text-[13px] font-medium hover:bg-[#1e232d] transition-colors cursor-pointer">
+                    {isUploading ? "Uploading..." : "Upload Image"}
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      className="hidden" 
+                      onChange={handleImageUpload} 
+                      disabled={isUploading} 
+                    />
+                  </label>
+                  <button 
+                    onClick={handleRemoveImage}
+                    className="text-[#ef4444] text-[13px] font-medium hover:text-[#dc2626] transition-colors"
+                  >
                     Remove
                   </button>
                 </div>

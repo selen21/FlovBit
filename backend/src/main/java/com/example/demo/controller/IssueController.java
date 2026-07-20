@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping; // EKLENDİ
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,6 +66,24 @@ public class IssueController {
         try {
             List<Issue> issues = issueRepository.findByWorkspaceId(workspaceId);
             return ResponseEntity.ok(issues);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Görev Durumunu (Status) Güncelleme (Sürükle-Bırak için)
+    @PutMapping("/{issueId}/status")
+    public ResponseEntity<?> updateIssueStatus(@PathVariable Long issueId, @RequestBody Map<String, String> request) {
+        try {
+            String newStatus = request.get("status");
+            
+            Issue issue = issueRepository.findById(issueId)
+                .orElseThrow(() -> new RuntimeException("Görev bulunamadı!"));
+
+            issue.setStatus(newStatus);
+            Issue updatedIssue = issueRepository.save(issue);
+            
+            return ResponseEntity.ok(updatedIssue);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -1,54 +1,139 @@
 "use client";
-import { useState } from "react";
-import { FiBell } from "react-icons/fi";
+import { useState, useEffect } from "react";
+import { FiBell, FiCheck, FiCheckCircle } from "react-icons/fi";
 
 export default function NotificationsPage() {
-  // Hangi sekmenin aktif olduğunu tutan state
   const [activeTab, setActiveTab] = useState("all");
+  const [notifications, setNotifications] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchNotifications();
+  }, []);
+
+  const fetchNotifications = async () => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    if (!token || !email) return;
+
+    try {
+      const response = await fetch(`http://localhost:8081/api/v1/notifications/user/${email}`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setNotifications(data);
+      }
+    } catch (error) {
+      console.error("Bildirimler çekilemedi:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const markAsRead = async (id: number) => {
+    const token = localStorage.getItem("token");
+    setNotifications(prev => prev.map(notif => notif.id === id ? { ...notif, read: true, isRead: true } : notif));
+    try {
+      await fetch(`http://localhost:8081/api/v1/notifications/${id}/read`, {
+        method: "PUT",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+    } catch (error) {
+      console.error("Bildirim güncellenemedi:", error);
+    }
+  };
+
+  const markAllAsRead = async () => {
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("email");
+    if (!token || !email) return;
+    setNotifications(prev => prev.map(notif => ({ ...notif, read: true, isRead: true })));
+    try {
+      await fetch(`http://localhost:8081/api/v1/notifications/user/${email}/read-all`, {
+        method: "PUT",
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+    } catch (error) {
+      console.error("Bildirimler güncellenemedi:", error);
+    }
+  };
+
+  const filteredNotifications = notifications.filter(notif => {
+    const isNotifRead = notif.read === true || notif.isRead === true;
+    return activeTab === "unread" ? !isNotifRead : true;
+  });
+
+  const unreadCount = notifications.filter(n => !(n.read === true || n.isRead === true)).length;
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("tr-TR", { 
+      month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" 
+    });
+  };
 
   return (
     <div className="p-8 max-w-[1000px] mx-auto w-full animate-in fade-in duration-300 pb-24">
-      
-      {/* Üst Kısım: Başlık ve Toggle Butonu */}
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-white text-[26px] font-bold tracking-tight">Notifications</h1>
-        
-        <div className="flex items-center p-1 bg-transparent border border-[#2a2f3a] rounded-full">
-          <button 
-            onClick={() => setActiveTab("all")}
-            className={`px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors ${
-              activeTab === "all" ? "bg-[#26282b] text-white shadow-sm" : "text-[#848d9c] hover:text-white"
-            }`}
-          >
-            All
-          </button>
-          <button 
-            onClick={() => setActiveTab("unread")}
-            className={`px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors ${
-              activeTab === "unread" ? "bg-[#26282b] text-white shadow-sm" : "text-[#848d9c] hover:text-white"
-            }`}
-          >
-            Unread
-          </button>
+        <div className="flex items-center gap-4">
+          <h1 className="text-white text-[26px] font-bold tracking-tight">Notifications</h1>
+          {unreadCount > 0 && (
+            <span className="bg-[#5c9dff] text-[#0b0d12] text-[12px] font-bold px-2 py-0.5 rounded-full">
+              {unreadCount} New
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-4">
+          {unreadCount > 0 && (
+            <button onClick={markAllAsRead} className="flex items-center gap-2 text-[#848d9c] hover:text-white text-[13px] font-medium transition-colors">
+              <FiCheckCircle size={16} /> Mark all as read
+            </button>
+          )}
+          <div className="flex items-center p-1 bg-transparent border border-[#2a2f3a] rounded-full">
+            <button onClick={() => setActiveTab("all")} className={`px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors ${activeTab === "all" ? "bg-[#26282b] text-white shadow-sm" : "text-[#848d9c] hover:text-white"}`}>All</button>
+            <button onClick={() => setActiveTab("unread")} className={`px-5 py-1.5 text-[13px] font-medium rounded-full transition-colors ${activeTab === "unread" ? "bg-[#26282b] text-white shadow-sm" : "text-[#848d9c] hover:text-white"}`}>Unread</button>
+          </div>
         </div>
       </div>
 
-      {/* Empty State (Boş Durum) Kartı */}
-      <div className="bg-[#11141b] border border-[#1e232d] rounded-2xl flex flex-col items-center justify-center h-[340px]">
-        <div className="w-[52px] h-[52px] bg-[#1c2436] rounded-[16px] flex items-center justify-center mb-5">
-          <FiBell className="text-[#848d9c] text-[22px]" />
+      {isLoading ? (
+        <div className="text-[#848d9c] text-center mt-20">Bildirimler yükleniyor...</div>
+      ) : filteredNotifications.length === 0 ? (
+        <div className="bg-[#11141b] border border-[#1e232d] rounded-2xl flex flex-col items-center justify-center h-[340px]">
+          <div className="w-[52px] h-[52px] bg-[#1c2436] rounded-[16px] flex items-center justify-center mb-5">
+            <FiBell className="text-[#848d9c] text-[22px]" />
+          </div>
+          <h3 className="text-white text-[15px] font-bold tracking-wide mb-1.5">
+            {activeTab === "all" ? "No notifications yet" : "No unread notifications"}
+          </h3>
+          <p className="text-[#848d9c] text-[13px]">
+            {activeTab === "all" ? "You'll see notifications here when something happens." : "You're all caught up!"}
+          </p>
         </div>
-        
-        {/* Yazılar seçili sekmeye göre değişiyor */}
-        <h3 className="text-white text-[15px] font-bold tracking-wide mb-1.5">
-          {activeTab === "all" ? "No notifications yet" : "No unread notifications"}
-        </h3>
-        <p className="text-[#848d9c] text-[13px]">
-          {activeTab === "all" 
-            ? "You'll see notifications here when something happens." 
-            : "You're all caught up!"}
-        </p>
-      </div>
+      ) : (
+        <div className="flex flex-col gap-3">
+          {filteredNotifications.map((notif) => {
+            const isRead = notif.read === true || notif.isRead === true;
+            return (
+              <div key={notif.id} className={`flex items-start justify-between p-5 rounded-xl border ${isRead ? "bg-[#0b0d12] border-[#1e232d]" : "bg-[#11141b] border-[#2a3140]"}`}>
+                <div className="flex items-start gap-4">
+                  <div className="mt-1">{!isRead && <div className="w-2 h-2 rounded-full bg-[#5c9dff]"></div>}</div>
+                  <div className="flex flex-col gap-1">
+                    <h4 className={`text-[15px] ${isRead ? "text-[#e2e8f0]" : "text-white font-bold"}`}>{notif.title}</h4>
+                    <p className="text-[#848d9c] text-[14px] leading-relaxed">{notif.message}</p>
+                    <span className="text-[#5e5f64] text-[12px] mt-1 font-mono">{formatDate(notif.createdAt)}</span>
+                  </div>
+                </div>
+                {!isRead && (
+                  <button onClick={() => markAsRead(notif.id)} className="w-8 h-8 rounded-full flex items-center justify-center text-[#848d9c] hover:text-[#5c9dff] hover:bg-[#1c2436] transition-colors">
+                    <FiCheck size={16} />
+                  </button>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

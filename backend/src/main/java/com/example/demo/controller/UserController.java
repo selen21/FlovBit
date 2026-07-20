@@ -25,19 +25,36 @@ public class UserController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // Profil İsmi Güncelleme
+    // Profil İsmi ve Fotoğrafı Güncelleme
     @PostMapping("/update-profile")
     public ResponseEntity<?> updateProfile(@RequestBody Map<String, String> request) {
-        String email = request.get("email");
-        String newName = request.get("name");
+        try {
+            String email = request.get("email");
+            String newName = request.get("name");
+            String avatarUrl = request.get("avatarUrl"); // YENİ: Ön yüzden gelecek profil fotoğrafı URL'si
 
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı!"));
+            User user = userRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı!"));
 
-        user.setUsername(newName);
-        userRepository.save(user);
+            // İsim boş gelmediyse güncelle
+            if (newName != null && !newName.trim().isEmpty()) {
+                user.setUsername(newName);
+            }
+            
+            // Avatar boş gelmediyse güncelle
+            if (avatarUrl != null && !avatarUrl.trim().isEmpty()) {
+                user.setAvatarUrl(avatarUrl);
+            }
 
-        return ResponseEntity.ok(Map.of("message", "Profil başarıyla güncellendi."));
+            userRepository.save(user);
+
+            return ResponseEntity.ok(Map.of(
+                "message", "Profil başarıyla güncellendi.",
+                "avatarUrl", user.getAvatarUrl() != null ? user.getAvatarUrl() : ""
+            ));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Profil güncellenemedi: " + e.getMessage());
+        }
     }
 
     // Şifre Değiştirme
@@ -49,6 +66,11 @@ public class UserController {
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("Kullanıcı bulunamadı!"));
+
+        // YENİ: Google ile giren kullanıcının şifresi yoktur, çökmesini (NullPointerException) engelliyoruz
+        if ("OAUTH2".equals(user.getProvider()) && user.getPasswordHash() == null) {
+            return ResponseEntity.badRequest().body("Google ile giriş yaptığınız için mevcut bir şifreniz yok.");
+        }
 
         // Mevcut şifre kontrolü
         if (!passwordEncoder.matches(currentPassword, user.getPasswordHash())) {
