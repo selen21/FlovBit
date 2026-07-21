@@ -2,7 +2,8 @@
 import { motion } from "framer-motion";
 import { SiGithub, SiFigma, SiNotion, SiLinear, SiJira, SiDiscord } from "react-icons/si";
 import { FaSlack } from "react-icons/fa";
-import { VscVscode } from "react-icons/vsc"; // <-- VS Code ikonunu buraya aldık
+import { VscVscode } from "react-icons/vsc"; 
+import Link from "next/link"; // Yönlendirmeler için Link bileşenini ekledik
 
 export default function Home() {
   return (
@@ -17,16 +18,16 @@ export default function Home() {
            FlovBit
         </div>
         <div className="flex gap-7 text-[14px] text-gray-600 font-medium">
-          <a href="#" className="hover:text-black transition-colors">Features</a>
-          <a href="#" className="hover:text-black transition-colors">Pricing</a>
-          <a href="#" className="hover:text-black transition-colors">About</a>
-          <a href="#" className="hover:text-black transition-colors">Contact</a>
+          <Link href="#" className="hover:text-black transition-colors">Features</Link>
+          <Link href="#" className="hover:text-black transition-colors">Pricing</Link>
+          <Link href="#" className="hover:text-black transition-colors">About</Link>
+          <Link href="#" className="hover:text-black transition-colors">Contact</Link>
         </div>
         <div className="flex items-center gap-5">
-          <span className="text-[14px] font-medium text-gray-600 cursor-pointer hover:text-black">Sign in</span>
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full text-[14px] font-medium hover:opacity-90 transition-opacity">
+          <Link href="/register" className="text-[14px] font-medium text-gray-600 cursor-pointer hover:text-black">Sign in</Link>
+          <Link href="/register" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-5 py-2 rounded-full text-[14px] font-medium hover:opacity-90 transition-opacity">
             Get Started
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -40,9 +41,7 @@ export default function Home() {
 
         {/* Ana Başlık - Renk akışı kusursuzlaştırıldı */}
         <h1 className="text-[48px] sm:text-[56px] font-bold tracking-tight leading-[1.1] mb-5">
-          {/* Plan less'in rengi açıldı (blue-600) */}
           <span className="text-blue-600">Plan less.</span>{" "}
-          {/* Execute more tam olarak aynı renkle (from-blue-600) başlıyor */}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-teal-400">
             Execute more.
           </span>
@@ -55,9 +54,9 @@ export default function Home() {
 
         {/* Butonlar - Küçültüldü */}
         <div className="flex items-center gap-3">
-          <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-[15px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity shadow-md">
+          <Link href="/register" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full text-[15px] font-medium flex items-center gap-2 hover:opacity-90 transition-opacity shadow-md">
             Get Started <span className="text-sm">→</span>
-          </button>
+          </Link>
           
           <button className="bg-white text-gray-700 border border-gray-200 px-6 py-3 rounded-full text-[15px] font-medium hover:bg-gray-50 transition-colors flex items-center gap-2 shadow-sm">
             <svg className="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -688,7 +687,7 @@ export default function Home() {
             { name: 'Notion', icon: <SiNotion className="w-6 h-6 text-black" /> },
             { name: 'Linear', icon: <SiLinear className="w-6 h-6 text-[#5E6AD2]" /> },
             { name: 'Jira', icon: <SiJira className="w-6 h-6 text-[#0052CC]" /> },
-            { name: 'VS Code', icon: <VscVscode className="w-6 h-6 text-[#007ACC]" /> }, // <-- Burası değişti
+            { name: 'VS Code', icon: <VscVscode className="w-6 h-6 text-[#007ACC]" /> }, 
             { name: 'Discord', icon: <SiDiscord className="w-6 h-6 text-[#5865F2]" /> }
           ].map((tool) => (
             <motion.div 
@@ -766,9 +765,9 @@ export default function Home() {
               <p className="text-gray-600 text-lg">
                 Join teams shipping 2x faster with Flowbit.
               </p>
-              <button className="bg-[#4f46e5] hover:bg-[#4338ca] text-white font-semibold py-3 px-8 rounded-full transition-colors shadow-md">
+              <Link href="/register" className="bg-[#4f46e5] hover:bg-[#4338ca] text-white font-semibold py-3 px-8 rounded-full transition-colors shadow-md text-center inline-block">
                 Get Started
-              </button>
+              </Link>
             </div>
           </div>
         </div>
@@ -781,7 +780,6 @@ export default function Home() {
           {/* Logo ve Açıklama (2 Kolon Kaplar) */}
           <div className="col-span-2 flex flex-col gap-4">
             <div className="flex items-center gap-2">
-              {/* Eğer kendi logonu kullanmak istersen buraya <img src="/flowbit_logo.png" /> ekleyebilirsin */}
               <div className="w-6 h-6 bg-blue-600 rounded-md flex items-center justify-center">
                 <span className="text-white text-xs font-bold">F</span>
               </div>
@@ -795,26 +793,26 @@ export default function Home() {
           {/* Product Kolonu */}
           <div className="flex flex-col gap-4 mt-2 md:mt-0">
             <h4 className="font-semibold text-gray-900 text-sm">Product</h4>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Features</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Integrations</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Pricing</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Changelog</a>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Features</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Integrations</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Pricing</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Changelog</Link>
           </div>
 
           {/* Company Kolonu */}
           <div className="flex flex-col gap-4 mt-2 md:mt-0">
             <h4 className="font-semibold text-gray-900 text-sm">Company</h4>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">About Us</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Blog</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Careers</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Contact</a>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">About Us</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Blog</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Careers</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Contact</Link>
           </div>
 
           {/* Legal Kolonu */}
           <div className="flex flex-col gap-4 mt-2 md:mt-0">
             <h4 className="font-semibold text-gray-900 text-sm">Legal</h4>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</a>
-            <a href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</a>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Privacy Policy</Link>
+            <Link href="#" className="text-[14px] text-gray-500 hover:text-blue-600 transition-colors">Terms of Service</Link>
           </div>
         </div>
 
@@ -822,9 +820,9 @@ export default function Home() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between pt-8 border-t border-gray-100 text-sm text-gray-400">
           <p>© 2026 FlovBit Inc. All rights reserved.</p>
           <div className="flex items-center gap-6 mt-4 md:mt-0">
-            <a href="#" className="hover:text-gray-600 transition-colors">Twitter</a>
-            <a href="#" className="hover:text-gray-600 transition-colors">GitHub</a>
-            <a href="#" className="hover:text-gray-600 transition-colors">Discord</a>
+            <Link href="#" className="hover:text-gray-600 transition-colors">Twitter</Link>
+            <Link href="#" className="hover:text-gray-600 transition-colors">GitHub</Link>
+            <Link href="#" className="hover:text-gray-600 transition-colors">Discord</Link>
           </div>
         </div>
       </footer>
