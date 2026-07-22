@@ -25,13 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
-      suppressHydrationWarning // next-themes'in düzgün çalışması için kritik
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+     lang="en"
+      suppressHydrationWarning
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
       <body className="min-h-full flex flex-col">
         <Providers>{children}</Providers>
       </body>
     </html>
+    
   );
 }

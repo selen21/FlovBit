@@ -104,34 +104,34 @@ export default function ApiReferencePage() {
 
   const getMethodColor = (method: string) => {
     switch (method) {
-      case "GET": return "bg-[#22c55e]/10 text-[#22c55e]";
-      case "POST": return "bg-[#3b82f6]/10 text-[#3b82f6]";
-      case "PATCH": return "bg-[#eab308]/10 text-[#eab308]";
-      case "DELETE": return "bg-[#ef4444]/10 text-[#ef4444]";
-      default: return "bg-gray-500/10 text-gray-400";
+      case "GET": return "bg-green-100 text-green-600 dark:bg-[#22c55e]/10 dark:text-[#22c55e]";
+      case "POST": return "bg-blue-100 text-blue-600 dark:bg-[#3b82f6]/10 dark:text-[#3b82f6]";
+      case "PATCH": return "bg-yellow-100 text-yellow-600 dark:bg-[#eab308]/10 dark:text-[#eab308]";
+      case "DELETE": return "bg-red-100 text-red-600 dark:bg-[#ef4444]/10 dark:text-[#ef4444]";
+      default: return "bg-gray-100 text-gray-500 dark:bg-gray-500/10 dark:text-gray-400";
     }
   };
 
   return (
-    <div className="p-8 max-w-[1100px] mx-auto w-full pb-24 font-sans">
+    <div className="p-8 max-w-[1100px] mx-auto w-full pb-24 font-sans transition-colors duration-200">
       
       {/* BAŞLIK ALANI */}
-      <h1 className="text-white text-[28px] font-bold tracking-tight mb-2">API & MCP Guide</h1>
-      <p className="text-[#848d9c] text-[15px] mb-8">Programmatic integration with FlovBit - step by step, filled with your environment.</p>
+      <h1 className="text-slate-900 dark:text-white text-[28px] font-bold tracking-tight mb-2">API & MCP Guide</h1>
+      <p className="text-gray-500 dark:text-[#848d9c] text-[15px] mb-8">Programmatic integration with FlovBit - step by step, filled with your environment.</p>
 
       {/* YOUR ENVIRONMENT BÖLÜMÜ */}
       <div className="mb-12">
-        <h3 className="text-white text-[14px] font-semibold mb-4">Your Environment <span className="text-[#848d9c] font-normal">— auto-filled - used in commands</span></h3>
-        <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden flex flex-wrap">
+        <h3 className="text-slate-900 dark:text-white text-[14px] font-semibold mb-4">Your Environment <span className="text-gray-500 dark:text-[#848d9c] font-normal">— auto-filled - used in commands</span></h3>
+        <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden flex flex-wrap shadow-sm dark:shadow-none transition-colors">
           {envData.map((item, idx) => (
-            <div key={idx} className={`flex-1 min-w-[200px] p-4 ${idx !== envData.length - 1 ? 'border-r border-[#1e232d]' : ''}`}>
-              <div className="text-[#848d9c] text-[12px] mb-2">{item.label}</div>
-              <div className="flex items-center justify-between gap-2 bg-[#0b0d12] border border-[#1e232d] rounded-md px-3 py-1.5 hover:border-[#5c9dff]/30 transition-colors cursor-pointer group">
-                <span className={`text-[13px] truncate font-mono ${item.isLink ? 'text-[#848d9c]' : 'text-[#e2e8f0]'}`}>
+            <div key={idx} className={`flex-1 min-w-[200px] p-4 ${idx !== envData.length - 1 ? 'border-r border-gray-200 dark:border-[#1e232d]' : ''}`}>
+              <div className="text-gray-500 dark:text-[#848d9c] text-[12px] mb-2">{item.label}</div>
+              <div className="flex items-center justify-between gap-2 bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-md px-3 py-1.5 hover:border-blue-300 dark:hover:border-[#5c9dff]/30 transition-colors cursor-pointer group">
+                <span className={`text-[13px] truncate font-mono ${item.isLink ? 'text-blue-500 dark:text-[#848d9c]' : 'text-slate-800 dark:text-[#e2e8f0]'}`}>
                   {item.value}
                 </span>
                 {!item.isLink && (
-                  <button className="text-[#848d9c] group-hover:text-white transition-colors flex-shrink-0 flex items-center gap-1 text-[12px]">
+                  <button className="text-gray-400 dark:text-[#848d9c] group-hover:text-slate-900 dark:group-hover:text-white transition-colors flex-shrink-0 flex items-center gap-1 text-[12px]">
                     <FiCopy /> Copy
                   </button>
                 )}
@@ -143,28 +143,28 @@ export default function ApiReferencePage() {
 
       {/* QUICK START BÖLÜMÜ */}
       <div className="mb-16">
-        <h2 className="text-white text-[22px] font-bold mb-2">Quick Start</h2>
-        <p className="text-[#848d9c] text-[14px] mb-8">First integration in four steps — commands are filled with your environment.</p>
+        <h2 className="text-slate-900 dark:text-white text-[22px] font-bold mb-2">Quick Start</h2>
+        <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-8">First integration in four steps — commands are filled with your environment.</p>
 
         <div className="space-y-10">
           {/* Adım 1 */}
           <div className="relative pl-12">
-            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-[#5c9dff]/10 text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">1</div>
-            <h3 className="text-white text-[16px] font-bold mb-2">Get token</h3>
-            <p className="text-[#848d9c] text-[14px] mb-4">Take the data.accessToken value from the login response and use it as $TOKEN.</p>
-            <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-              <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                <span className="text-[#848d9c] text-[13px]">Get token</span>
-                <span className="text-[#848d9c] text-[12px] font-mono border border-[#1e232d] px-2 py-0.5 rounded">curl</span>
+            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-blue-50 dark:bg-[#5c9dff]/10 text-blue-600 dark:text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">1</div>
+            <h3 className="text-slate-900 dark:text-white text-[16px] font-bold mb-2">Get token</h3>
+            <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">Take the data.accessToken value from the login response and use it as $TOKEN.</p>
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+              <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Get token</span>
+                <span className="text-gray-500 dark:text-[#848d9c] text-[12px] font-mono border border-gray-200 dark:border-[#1e232d] px-2 py-0.5 rounded bg-white dark:bg-transparent">curl</span>
               </div>
               <div className="p-4 relative group">
-                <button className="absolute top-4 right-4 text-[#848d9c] group-hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors">
+                <button className="absolute top-4 right-4 text-gray-500 dark:text-[#848d9c] group-hover:text-slate-900 dark:group-hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors">
                   <FiCopy /> Copy
                 </button>
-                <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
-<span className="text-[#c678dd]">curl</span> -X POST https://flovbit.codifya.com/api/auth/login \
-  -H <span className="text-[#98c379]">"Content-Type: application/json"</span> \
-  -d <span className="text-[#98c379]">'{`{
+                <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
+<span className="text-purple-600 dark:text-[#c678dd]">curl</span> -X POST https://flovbit.codifya.com/api/auth/login \
+  -H <span className="text-green-600 dark:text-[#98c379]">"Content-Type: application/json"</span> \
+  -d <span className="text-green-600 dark:text-[#98c379]">'{`{
     "email": "test@example.com",
     "password": "password123"
   }`}'</span>
@@ -175,21 +175,21 @@ export default function ApiReferencePage() {
 
           {/* Adım 2 */}
           <div className="relative pl-12">
-            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-[#5c9dff]/10 text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">2</div>
-            <h3 className="text-white text-[16px] font-bold mb-2">Make your first request</h3>
-            <p className="text-[#848d9c] text-[14px] mb-4">Fetch issues assigned to you with a Bearer token.</p>
-            <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-              <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                <span className="text-[#848d9c] text-[13px]">Make your first request</span>
-                <span className="text-[#848d9c] text-[12px] font-mono border border-[#1e232d] px-2 py-0.5 rounded">curl</span>
+            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-blue-50 dark:bg-[#5c9dff]/10 text-blue-600 dark:text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">2</div>
+            <h3 className="text-slate-900 dark:text-white text-[16px] font-bold mb-2">Make your first request</h3>
+            <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">Fetch issues assigned to you with a Bearer token.</p>
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+              <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Make your first request</span>
+                <span className="text-gray-500 dark:text-[#848d9c] text-[12px] font-mono border border-gray-200 dark:border-[#1e232d] px-2 py-0.5 rounded bg-white dark:bg-transparent">curl</span>
               </div>
               <div className="p-4 relative group">
-                <button className="absolute top-4 right-4 text-[#848d9c] group-hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors">
+                <button className="absolute top-4 right-4 text-gray-500 dark:text-[#848d9c] group-hover:text-slate-900 dark:group-hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors">
                   <FiCopy /> Copy
                 </button>
-                <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
-<span className="text-[#c678dd]">curl</span> "https://flovbit.codifya.com/api/users/me/issues" \
-  -H <span className="text-[#98c379]">"Authorization: Bearer $TOKEN"</span>
+                <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
+<span className="text-purple-600 dark:text-[#c678dd]">curl</span> "https://flovbit.codifya.com/api/users/me/issues" \
+  -H <span className="text-green-600 dark:text-[#98c379]">"Authorization: Bearer $TOKEN"</span>
                 </pre>
               </div>
             </div>
@@ -197,23 +197,23 @@ export default function ApiReferencePage() {
 
           {/* Adım 3 */}
           <div className="relative pl-12">
-            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-[#5c9dff]/10 text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">3</div>
-            <h3 className="text-white text-[16px] font-bold mb-2">Create an issue</h3>
-            <p className="text-[#848d9c] text-[14px] mb-4">Get boardId from GET /api/projects/{"{id}"}/boards and columnId from GET /api/boards/{"{id}"}.</p>
-            <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-              <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                <span className="text-[#848d9c] text-[13px]">Create an issue</span>
-                <span className="text-[#848d9c] text-[12px] font-mono border border-[#1e232d] px-2 py-0.5 rounded">curl</span>
+            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-blue-50 dark:bg-[#5c9dff]/10 text-blue-600 dark:text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">3</div>
+            <h3 className="text-slate-900 dark:text-white text-[16px] font-bold mb-2">Create an issue</h3>
+            <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">Get boardId from GET /api/projects/{"{id}"}/boards and columnId from GET /api/boards/{"{id}"}.</p>
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+              <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Create an issue</span>
+                <span className="text-gray-500 dark:text-[#848d9c] text-[12px] font-mono border border-gray-200 dark:border-[#1e232d] px-2 py-0.5 rounded bg-white dark:bg-transparent">curl</span>
               </div>
               <div className="p-4 relative group">
-                <button className="absolute top-4 right-4 text-[#848d9c] group-hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors">
+                <button className="absolute top-4 right-4 text-gray-500 dark:text-[#848d9c] group-hover:text-slate-900 dark:group-hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors">
                   <FiCopy /> Copy
                 </button>
-                <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
-<span className="text-[#c678dd]">curl</span> -X POST https://flovbit.codifya.com/api/boards/{"{boardId}"}/issues \
-  -H <span className="text-[#98c379]">"Authorization: Bearer $TOKEN"</span> \
-  -H <span className="text-[#98c379]">"Content-Type: application/json"</span> \
-  -d <span className="text-[#98c379]">'{`{
+                <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
+<span className="text-purple-600 dark:text-[#c678dd]">curl</span> -X POST https://flovbit.codifya.com/api/boards/{"{boardId}"}/issues \
+  -H <span className="text-green-600 dark:text-[#98c379]">"Authorization: Bearer $TOKEN"</span> \
+  -H <span className="text-green-600 dark:text-[#98c379]">"Content-Type: application/json"</span> \
+  -d <span className="text-green-600 dark:text-[#98c379]">'{`{
     "title": "My first issue",
     "columnId": "{columnId}",
     "priority": "MEDIUM"
@@ -225,19 +225,19 @@ export default function ApiReferencePage() {
 
           {/* Adım 4 */}
           <div className="relative pl-12">
-            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-[#5c9dff]/10 text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">4</div>
-            <h3 className="text-white text-[16px] font-bold mb-2">Connect MCP</h3>
-            <p className="text-[#848d9c] text-[14px] mb-4">Add this block to your Claude Desktop / Cursor MCP settings.</p>
-            <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-              <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                <span className="text-[#848d9c] text-[13px]">Connect MCP</span>
-                <span className="text-[#848d9c] text-[12px] font-mono border border-[#1e232d] px-2 py-0.5 rounded">config</span>
+            <div className="absolute left-0 top-0 w-8 h-8 rounded-full bg-blue-50 dark:bg-[#5c9dff]/10 text-blue-600 dark:text-[#5c9dff] flex items-center justify-center font-bold text-[14px]">4</div>
+            <h3 className="text-slate-900 dark:text-white text-[16px] font-bold mb-2">Connect MCP</h3>
+            <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">Add this block to your Claude Desktop / Cursor MCP settings.</p>
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+              <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Connect MCP</span>
+                <span className="text-gray-500 dark:text-[#848d9c] text-[12px] font-mono border border-gray-200 dark:border-[#1e232d] px-2 py-0.5 rounded bg-white dark:bg-transparent">config</span>
               </div>
               <div className="p-4 relative group">
-                <button className="absolute top-4 right-4 text-[#848d9c] group-hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors">
+                <button className="absolute top-4 right-4 text-gray-500 dark:text-[#848d9c] group-hover:text-slate-900 dark:group-hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors">
                   <FiCopy /> Copy
                 </button>
-                <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
+                <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
 {`{
   "mcpServers": {
     "flovbit": {
@@ -261,25 +261,25 @@ export default function ApiReferencePage() {
 
       {/* FULL REFERENCE BÖLÜMÜ & TABS */}
       <div>
-        <h2 className="text-white text-[22px] font-bold mb-6">Full Reference</h2>
+        <h2 className="text-slate-900 dark:text-white text-[22px] font-bold mb-6">Full Reference</h2>
         
         {/* Tab Menü */}
-        <div className="flex gap-6 border-b border-[#1e232d] mb-8">
+        <div className="flex gap-6 border-b border-gray-200 dark:border-[#1e232d] mb-8">
           <button 
             onClick={() => setActiveTab("rest")}
-            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "rest" ? "border-[#5c9dff] text-white" : "border-transparent text-[#848d9c] hover:text-white"}`}
+            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "rest" ? "border-blue-600 dark:border-[#5c9dff] text-blue-600 dark:text-white" : "border-transparent text-gray-500 dark:text-[#848d9c] hover:text-slate-900 dark:hover:text-white"}`}
           >
             REST API
           </button>
           <button 
             onClick={() => setActiveTab("mcp-tools")}
-            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "mcp-tools" ? "border-[#5c9dff] text-white" : "border-transparent text-[#848d9c] hover:text-white"}`}
+            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "mcp-tools" ? "border-blue-600 dark:border-[#5c9dff] text-blue-600 dark:text-white" : "border-transparent text-gray-500 dark:text-[#848d9c] hover:text-slate-900 dark:hover:text-white"}`}
           >
             MCP Tools
           </button>
           <button 
             onClick={() => setActiveTab("mcp-setup")}
-            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "mcp-setup" ? "border-[#5c9dff] text-white" : "border-transparent text-[#848d9c] hover:text-white"}`}
+            className={`pb-3 text-[14px] font-medium border-b-2 transition-colors ${activeTab === "mcp-setup" ? "border-blue-600 dark:border-[#5c9dff] text-blue-600 dark:text-white" : "border-transparent text-gray-500 dark:text-[#848d9c] hover:text-slate-900 dark:hover:text-white"}`}
           >
             MCP Setup
           </button>
@@ -290,18 +290,18 @@ export default function ApiReferencePage() {
           <div className="space-y-12">
             {restEndpoints.map((category, idx) => (
               <div key={idx}>
-                <h3 className="text-white text-[18px] font-bold mb-4">{category.category}</h3>
+                <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-4">{category.category}</h3>
                 <div className="flex flex-col gap-2">
                   {category.items.map((endpoint, eIdx) => (
-                    <div key={eIdx} className="bg-[#0b0d12] border border-[#1e232d] hover:border-[#2a3140] transition-colors rounded-lg p-3 flex items-center justify-between group cursor-pointer">
+                    <div key={eIdx} className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] hover:border-blue-200 dark:hover:border-[#2a3140] transition-colors rounded-lg p-3 flex items-center justify-between group cursor-pointer shadow-sm dark:shadow-none">
                       <div className="flex items-center gap-4">
                         <span className={`text-[11px] font-bold px-2 py-1 rounded w-[60px] text-center ${getMethodColor(endpoint.method)}`}>
                           {endpoint.method}
                         </span>
-                        <code className="text-[#e2e8f0] font-mono text-[13px]">{endpoint.path}</code>
-                        <span className="text-[#848d9c] text-[13px] ml-4 hidden md:block">{endpoint.desc}</span>
+                        <code className="text-slate-800 dark:text-[#e2e8f0] font-mono text-[13px]">{endpoint.path}</code>
+                        <span className="text-gray-500 dark:text-[#848d9c] text-[13px] ml-4 hidden md:block">{endpoint.desc}</span>
                       </div>
-                      <span className="text-[#848d9c] text-[11px] font-mono border border-[#1e232d] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">curl</span>
+                      <span className="text-gray-400 dark:text-[#848d9c] text-[11px] font-mono border border-gray-200 dark:border-[#1e232d] px-2 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity">curl</span>
                     </div>
                   ))}
                 </div>
@@ -310,17 +310,17 @@ export default function ApiReferencePage() {
             
             {/* TypeScript Client Example Block */}
             <div className="mt-12">
-              <h3 className="text-white text-[18px] font-bold mb-4">TypeScript client example</h3>
-              <p className="text-[#848d9c] text-[14px] mb-4">In-browser calls use the session cookie; external clients add a Bearer token.</p>
-              <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-                <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                  <span className="text-[#848d9c] text-[13px]">api-client.ts</span>
-                  <button className="text-[#848d9c] hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors">
+              <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-4">TypeScript client example</h3>
+              <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">In-browser calls use the session cookie; external clients add a Bearer token.</p>
+              <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+                <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                  <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">api-client.ts</span>
+                  <button className="text-gray-500 dark:text-[#848d9c] hover:text-slate-900 dark:hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors">
                     <FiCopy /> Copy
                   </button>
                 </div>
                 <div className="p-4">
-                  <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
+                  <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap leading-relaxed">
 {`// From the browser: session cookie is sent automatically, no token needed.
 // External (Node/CLI): add Authorization: Bearer <accessToken>
 const api = {
@@ -350,35 +350,35 @@ const api = {
         {/* --- TAB 2: MCP TOOLS --- */}
         {activeTab === "mcp-tools" && (
           <div>
-            <p className="text-[#848d9c] text-[14px] mb-6">All tools expect userId as their first parameter for identity. You can call them in natural language from an AI client.</p>
+            <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-6">All tools expect userId as their first parameter for identity. You can call them in natural language from an AI client.</p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
               {mcpTools.map((tool, idx) => (
-                <div key={idx} className="bg-[#11141b] border border-[#1e232d] rounded-xl p-5">
-                  <h4 className="text-[#5c9dff] text-[15px] font-mono font-bold mb-2">{tool.name}</h4>
-                  <p className="text-[#e2e8f0] text-[13px] mb-4">{tool.desc}</p>
+                <div key={idx} className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 shadow-sm dark:shadow-none">
+                  <h4 className="text-blue-600 dark:text-[#5c9dff] text-[15px] font-mono font-bold mb-2">{tool.name}</h4>
+                  <p className="text-slate-800 dark:text-[#e2e8f0] text-[13px] mb-4">{tool.desc}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {tool.params.map((param, pIdx) => (
-                      <span key={pIdx} className="bg-[#1e232d] text-[#848d9c] text-[11px] font-mono px-2 py-0.5 rounded">
+                      <span key={pIdx} className="bg-gray-100 dark:bg-[#1e232d] text-gray-500 dark:text-[#848d9c] text-[11px] font-mono px-2 py-0.5 rounded">
                         {param}
                       </span>
                     ))}
                   </div>
-                  <div className="bg-[#0b0d12] border border-[#1e232d] rounded p-2 text-[#848d9c] text-[12px]">
+                  <div className="bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded p-2 text-gray-500 dark:text-[#848d9c] text-[12px]">
                     {tool.example}
                   </div>
                 </div>
               ))}
             </div>
 
-            <h3 className="text-white text-[18px] font-bold mb-4 border-t border-[#1e232d] pt-8">MCP Prompts</h3>
+            <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-4 border-t border-gray-200 dark:border-[#1e232d] pt-8">MCP Prompts</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {mcpPrompts.map((prompt, idx) => (
-                <div key={idx} className="bg-[#11141b] border border-[#1e232d] rounded-xl p-5">
-                  <h4 className="text-[#c678dd] text-[15px] font-mono font-bold mb-2">{prompt.name}</h4>
-                  <p className="text-[#e2e8f0] text-[13px] mb-4">{prompt.desc}</p>
+                <div key={idx} className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 shadow-sm dark:shadow-none">
+                  <h4 className="text-purple-600 dark:text-[#c678dd] text-[15px] font-mono font-bold mb-2">{prompt.name}</h4>
+                  <p className="text-slate-800 dark:text-[#e2e8f0] text-[13px] mb-4">{prompt.desc}</p>
                   <div className="flex items-center gap-2">
-                    <span className="text-[#848d9c] text-[12px]">args:</span>
-                    <span className="text-[#848d9c] text-[11px] font-mono">{prompt.params.join(", ")}</span>
+                    <span className="text-gray-500 dark:text-[#848d9c] text-[12px]">args:</span>
+                    <span className="text-gray-500 dark:text-[#848d9c] text-[11px] font-mono">{prompt.params.join(", ")}</span>
                   </div>
                 </div>
               ))}
@@ -392,56 +392,56 @@ const api = {
             
             {/* API Keys Section */}
             <div>
-              <h3 className="text-white text-[18px] font-bold mb-2">API Keys</h3>
-              <p className="text-[#848d9c] text-[14px] mb-4">Create Bearer tokens for MCP HTTP and REST API requests.</p>
-              <div className="flex items-center gap-3 bg-[#11141b] p-4 rounded-xl border border-[#1e232d]">
+              <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-2">API Keys</h3>
+              <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">Create Bearer tokens for MCP HTTP and REST API requests.</p>
+              <div className="flex items-center gap-3 bg-white dark:bg-[#11141b] p-4 rounded-xl border border-gray-200 dark:border-[#1e232d] shadow-sm dark:shadow-none">
                 <input 
                   type="text" 
                   placeholder="Key name (e.g. Cursor, personal laptop)" 
-                  className="flex-1 bg-[#0b0d12] border border-[#1e232d] rounded-md px-3 py-2 text-[14px] text-white focus:outline-none focus:border-[#5c9dff]"
+                  className="flex-1 bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-md px-3 py-2 text-[14px] text-slate-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 dark:focus:border-[#5c9dff] transition-colors"
                 />
                 <div className="relative">
                   <button 
                     onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                    className="flex items-center gap-2 bg-[#0b0d12] border border-[#1e232d] px-3 py-2 rounded-md text-[14px] text-white w-[110px] justify-between"
+                    className="flex items-center gap-2 bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] px-3 py-2 rounded-md text-[14px] text-slate-900 dark:text-white w-[110px] justify-between transition-colors"
                   >
                     {keyExpiration} <FiChevronDown />
                   </button>
                   {isDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-1 w-full bg-[#11141b] border border-[#1e232d] rounded-md overflow-hidden z-10">
+                    <div className="absolute top-full right-0 mt-1 w-full bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-md overflow-hidden z-10 shadow-lg">
                       {["30 days", "90 days", "1 year", "Never"].map(opt => (
-                        <div key={opt} onClick={() => {setKeyExpiration(opt); setIsDropdownOpen(false);}} className="px-3 py-2 text-[13px] text-white hover:bg-[#1e232d] cursor-pointer">
+                        <div key={opt} onClick={() => {setKeyExpiration(opt); setIsDropdownOpen(false);}} className="px-3 py-2 text-[13px] text-slate-800 dark:text-white hover:bg-gray-50 dark:hover:bg-[#1e232d] cursor-pointer">
                           {opt}
                         </div>
                       ))}
                     </div>
                   )}
                 </div>
-                <button className="bg-[#5c9dff] text-[#0b0d12] px-4 py-2 rounded-md font-semibold text-[14px] hover:bg-[#4a8bee] transition-colors">
+                <button className="bg-blue-600 dark:bg-[#5c9dff] text-white dark:text-[#0b0d12] px-4 py-2 rounded-md font-semibold text-[14px] hover:bg-blue-700 dark:hover:bg-[#4a8bee] transition-colors">
                   Create
                 </button>
               </div>
-              <p className="text-[#848d9c] text-[13px] mt-4 ml-1">No API keys yet.</p>
+              <p className="text-gray-500 dark:text-[#848d9c] text-[13px] mt-4 ml-1">No API keys yet.</p>
             </div>
 
             {/* Connect Remotely */}
             <div>
-              <h3 className="text-white text-[18px] font-bold mb-2 flex items-center gap-2">
-                Connect remotely <span className="bg-[#1e232d] text-[#848d9c] text-[11px] px-2 py-0.5 rounded font-normal">(recommended)</span>
+              <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-2 flex items-center gap-2">
+                Connect remotely <span className="bg-gray-100 dark:bg-[#1e232d] text-gray-500 dark:text-[#848d9c] text-[11px] px-2 py-0.5 rounded font-normal">(recommended)</span>
               </h3>
-              <p className="text-[#848d9c] text-[14px] mb-4">
-                MCP endpoint: <code className="text-[#e2e8f0]">https://mcp.flovbit.codifya.com/mcp</code><br/>
-                Send the API key you create below in the <code className="text-[#e2e8f0]">Authorization: Bearer &lt;API_KEY&gt;</code> header.
+              <p className="text-gray-500 dark:text-[#848d9c] text-[14px] mb-4">
+                MCP endpoint: <code className="text-slate-800 dark:text-[#e2e8f0]">https://mcp.flovbit.codifya.com/mcp</code><br/>
+                Send the API key you create below in the <code className="text-slate-800 dark:text-[#e2e8f0]">Authorization: Bearer &lt;API_KEY&gt;</code> header.
               </p>
 
               <div className="space-y-4">
-                <div className="bg-[#11141b] border border-[#1e232d] rounded-xl overflow-hidden">
-                  <div className="flex justify-between items-center px-4 py-3 border-b border-[#1e232d] bg-[#0b0d12]">
-                    <span className="text-[#848d9c] text-[13px]">Claude Code</span>
-                    <button className="text-[#848d9c] hover:text-white flex items-center gap-1 text-[12px] bg-[#1e232d] px-2 py-1 rounded transition-colors"><FiCopy /> Copy</button>
+                <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl overflow-hidden shadow-sm dark:shadow-none">
+                  <div className="flex justify-between items-center px-4 py-3 border-b border-gray-200 dark:border-[#1e232d] bg-gray-50 dark:bg-[#0b0d12]">
+                    <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Claude Code</span>
+                    <button className="text-gray-500 dark:text-[#848d9c] hover:text-slate-900 dark:hover:text-white flex items-center gap-1 text-[12px] bg-gray-100 dark:bg-[#1e232d] px-2 py-1 rounded transition-colors"><FiCopy /> Copy</button>
                   </div>
                   <div className="p-4">
-                    <pre className="text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap">
+                    <pre className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-mono whitespace-pre-wrap">
 claude mcp add --transport http flovbit https://mcp.flovbit.codifya.com/mcp \
   --header "Authorization: Bearer &lt;API_KEY&gt;"
                     </pre>
@@ -452,19 +452,19 @@ claude mcp add --transport http flovbit https://mcp.flovbit.codifya.com/mcp \
 
             {/* MCP Resources */}
             <div>
-              <h3 className="text-white text-[18px] font-bold mb-4">MCP Resources</h3>
+              <h3 className="text-slate-900 dark:text-white text-[18px] font-bold mb-4">MCP Resources</h3>
               <div className="space-y-2">
-                <div className="bg-[#11141b] border border-[#1e232d] rounded-lg p-3 flex items-center gap-4">
-                  <code className="text-[#5c9dff] text-[13px] font-mono w-[200px]">board/{"{boardId}"}</code>
-                  <span className="text-[#848d9c] text-[13px]">Board snapshot with columns and status mappings</span>
+                <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-lg p-3 flex items-center gap-4 shadow-sm dark:shadow-none">
+                  <code className="text-blue-600 dark:text-[#5c9dff] text-[13px] font-mono w-[200px]">board/{"{boardId}"}</code>
+                  <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Board snapshot with columns and status mappings</span>
                 </div>
-                <div className="bg-[#11141b] border border-[#1e232d] rounded-lg p-3 flex items-center gap-4">
-                  <code className="text-[#5c9dff] text-[13px] font-mono w-[200px]">project/{"{projectId}"}/summary</code>
-                  <span className="text-[#848d9c] text-[13px]">Project summary with issue counts and workload</span>
+                <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-lg p-3 flex items-center gap-4 shadow-sm dark:shadow-none">
+                  <code className="text-blue-600 dark:text-[#5c9dff] text-[13px] font-mono w-[200px]">project/{"{projectId}"}/summary</code>
+                  <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Project summary with issue counts and workload</span>
                 </div>
-                <div className="bg-[#11141b] border border-[#1e232d] rounded-lg p-3 flex items-center gap-4">
-                  <code className="text-[#5c9dff] text-[13px] font-mono w-[200px]">cycle/{"{cycleId}"}/summary</code>
-                  <span className="text-[#848d9c] text-[13px]">Cycle summary with issue count and days remaining</span>
+                <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-lg p-3 flex items-center gap-4 shadow-sm dark:shadow-none">
+                  <code className="text-blue-600 dark:text-[#5c9dff] text-[13px] font-mono w-[200px]">cycle/{"{cycleId}"}/summary</code>
+                  <span className="text-gray-500 dark:text-[#848d9c] text-[13px]">Cycle summary with issue count and days remaining</span>
                 </div>
               </div>
             </div>

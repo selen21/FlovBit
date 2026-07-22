@@ -134,7 +134,7 @@ export default function Dashboard() {
   }, 0);
 
   return (
-    <div className="w-full h-full text-[14px] font-sans antialiased text-slate-800 dark:text-[#e2e8f0] pb-24">
+    <div className="w-full h-full text-[14px] font-sans antialiased text-slate-800 dark:text-[#e2e8f0] pb-24 transition-colors duration-200">
 
       <div className="w-full flex flex-col relative">
         
@@ -150,7 +150,7 @@ export default function Dashboard() {
 
           {/* 4'lü Özet Kartları */}
           <div className="grid grid-cols-4 gap-5 mb-10">
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="flex justify-between items-start">
                 <span className="text-gray-500 dark:text-[#848d9c] text-[11px] font-bold tracking-wider uppercase">My Issues</span>
                 <div className="w-7 h-7 rounded bg-blue-50 dark:bg-[#1c2436] text-blue-600 dark:text-[#5c9dff] flex items-center justify-center">
@@ -163,7 +163,7 @@ export default function Dashboard() {
               </div>
             </div>
             
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="flex justify-between items-start">
                 <span className="text-gray-500 dark:text-[#848d9c] text-[11px] font-bold tracking-wider uppercase">Total Issues</span>
                 <div className="w-7 h-7 rounded bg-blue-50 dark:bg-[#1c2436] text-blue-600 dark:text-[#5c9dff] flex items-center justify-center">
@@ -176,7 +176,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="flex justify-between items-start">
                 <span className="text-gray-500 dark:text-[#848d9c] text-[11px] font-bold tracking-wider uppercase">Active Cycles</span>
                 <div className="w-7 h-7 rounded bg-purple-50 dark:bg-[#2c1d3b] text-purple-600 dark:text-[#a855f7] flex items-center justify-center">
@@ -189,7 +189,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 flex flex-col justify-between h-[116px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="flex justify-between items-start">
                 <span className="text-gray-500 dark:text-[#848d9c] text-[11px] font-bold tracking-wider uppercase">Live Feed</span>
                 <div className="w-7 h-7 rounded bg-green-50 dark:bg-[#1a2e25] text-green-600 dark:text-[#22c55e] flex items-center justify-center">
@@ -207,7 +207,7 @@ export default function Dashboard() {
           <div>
             <h2 className="text-slate-900 dark:text-white text-[18px] font-bold tracking-wide mb-4">My Work</h2>
             <div className="grid grid-cols-3 gap-5">
-              <div className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none">
+              <div className="bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none transition-colors duration-200">
                 <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-200 dark:border-[#1e232d]">
                   <FiClock className="text-slate-800 dark:text-[#e2e8f0] text-[15px]" />
                   <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">Today Focus</span>
@@ -219,7 +219,7 @@ export default function Dashboard() {
                 </div>
               </div>
               
-              <div className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none">
+              <div className="bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none transition-colors duration-200">
                 <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-200 dark:border-[#1e232d]">
                   <FiZap className="text-slate-800 dark:text-[#e2e8f0] text-[15px]" />
                   <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">My Active Work</span>
@@ -231,7 +231,7 @@ export default function Dashboard() {
                 </div>
               </div>
 
-              <div className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none">
+              <div className="bg-gray-50 dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[220px] shadow-sm dark:shadow-none transition-colors duration-200">
                 <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-200 dark:border-[#1e232d]">
                   <FiAlertTriangle className="text-slate-800 dark:text-[#e2e8f0] text-[15px]" />
                   <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">Risk & Alerts</span>
@@ -263,7 +263,7 @@ export default function Dashboard() {
 
             <div className="grid grid-cols-3 gap-5">
               <div className="relative rounded-xl p-[1px] bg-gradient-to-br from-red-500/40 via-gray-200 dark:via-[#1e232d] to-gray-200 dark:to-[#1e232d] h-[220px]">
-                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col">
+                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col transition-colors duration-200">
                   <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 dark:border-[#1e232d]">
                     <FiAlertTriangle className="text-red-500 dark:text-red-400 text-[15px]" />
                     <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">Overdue Today</span>
@@ -277,7 +277,7 @@ export default function Dashboard() {
               </div>
               
               <div className="relative rounded-xl p-[1px] bg-gradient-to-br from-amber-500/40 via-gray-200 dark:via-[#1e232d] to-gray-200 dark:to-[#1e232d] h-[220px]">
-                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col">
+                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col transition-colors duration-200">
                   <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 dark:border-[#1e232d]">
                     <FiEye className="text-amber-500 dark:text-amber-400 text-[15px]" />
                     <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">Review Pending</span>
@@ -291,7 +291,7 @@ export default function Dashboard() {
               </div>
 
               <div className="relative rounded-xl p-[1px] bg-gradient-to-br from-emerald-500/40 via-gray-200 dark:via-[#1e232d] to-gray-200 dark:to-[#1e232d] h-[220px]">
-                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col">
+                <div className="bg-white dark:bg-[#0b0d12] rounded-[11px] h-full w-full flex flex-col transition-colors duration-200">
                   <div className="flex items-center gap-2 px-5 py-3 border-b border-gray-100 dark:border-[#1e232d]">
                     <FiZap className="text-emerald-500 dark:text-emerald-400 text-[15px]" />
                     <span className="text-slate-800 dark:text-[#e2e8f0] text-[13px] font-semibold">Active Work</span>
@@ -308,7 +308,7 @@ export default function Dashboard() {
 
           {/* MY ISSUES & TEAM ACTIVITY */}
           <div className="grid grid-cols-2 gap-5 mt-12 mb-12">
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[340px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[340px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="p-5 border-b border-gray-200 dark:border-[#1e232d]">
                 <div className="flex justify-between items-center mb-5">
                   <h2 className="text-slate-900 dark:text-white text-[16px] font-bold tracking-wide">My Issues</h2>
@@ -344,7 +344,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[340px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-xl flex flex-col h-[340px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="flex justify-between items-center p-5 border-b border-gray-200 dark:border-[#1e232d]">
                 <h2 className="text-slate-900 dark:text-white text-[16px] font-bold tracking-wide">Team Activity</h2>
                 <div className="flex items-center gap-1.5">
@@ -415,7 +415,7 @@ export default function Dashboard() {
                   <p className="text-gray-500 dark:text-[#848d9c]">Yükleniyor...</p>
               ) : workspaces.length > 0 ? (
                 workspaces.map((w: any) => (
-                  <div key={w.id} className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 w-[340px] flex flex-col gap-5 shadow-sm dark:shadow-none">
+                  <div key={w.id} className="bg-white dark:bg-[#0b0d12] border border-gray-200 dark:border-[#1e232d] rounded-xl p-5 w-[340px] flex flex-col gap-5 shadow-sm dark:shadow-none transition-colors duration-200">
                     <div className="flex items-center gap-3">
                       <div className="text-blue-600 dark:text-[#5c9dff] font-bold text-[16px] w-6 text-center bg-blue-50 dark:bg-[#1c2436] rounded uppercase">
                         {w.name.charAt(0)}
@@ -451,7 +451,7 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-2xl flex flex-col items-center justify-center h-[340px] shadow-sm dark:shadow-none">
+            <div className="bg-white dark:bg-[#11141b] border border-gray-200 dark:border-[#1e232d] rounded-2xl flex flex-col items-center justify-center h-[340px] shadow-sm dark:shadow-none transition-colors duration-200">
               <div className="w-[52px] h-[52px] bg-gray-100 dark:bg-[#1c2436] rounded-[16px] flex items-center justify-center mb-5">
                 <FiBell className="text-gray-400 dark:text-[#848d9c] text-[22px]" />
               </div>
