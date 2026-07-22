@@ -15,9 +15,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
+
 @Entity
 @Table(name = "issues")
 public class Issue {
+private Long projectId;
+private Long cycleId; // Eğer null ise görev "Backlog" dadır.
+private Long columnId; // Eğer dinamik kolon yapacaksak
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,15 +21,38 @@ export default function DashboardLayout({
 
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
+  
+  // Bildirimler için yeni state
+  const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     setMounted(true);
     const email = localStorage.getItem("email");
+    const token = localStorage.getItem("token");
+    
     if (email) {
         setUserEmail(email);
         setUserName(email.split('@')[0]); 
+
+        // Okunmamış bildirim sayısını API'den çek
+        if (token) {
+          fetch(`http://localhost:8081/api/v1/notifications/user/${email}`, {
+            headers: { "Authorization": `Bearer ${token}` }
+          })
+          .then(res => {
+            if(res.ok) return res.json();
+            return [];
+          })
+          .then(data => {
+            if(Array.isArray(data)) {
+              const unread = data.filter((n: any) => !(n.read === true || n.isRead === true)).length;
+              setUnreadCount(unread);
+            }
+          })
+          .catch(err => console.error("Bildirimler çekilemedi:", err));
+        }
     }
-  }, []);
+  }, [pathname]); // pathname değiştiğinde bildirimleri tekrar günceller
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -40,11 +63,9 @@ export default function DashboardLayout({
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   return (
-    // ANA ARKAPLAN: Açık temada çok açık gri/beyaz, koyu temada siyah
     <div className="flex h-screen w-full bg-[#f4f7fc] dark:bg-[#0b0d12] text-[14px] font-sans antialiased text-slate-800 dark:text-[#e2e8f0] relative overflow-hidden transition-colors duration-200">
       
       {/* --- SIDEBAR --- */}
-      {/* SIDEBAR ARKAPLAN: Açık temada beyaz, koyu temada koyu mavi */}
       <aside className="w-[240px] flex-shrink-0 bg-white dark:bg-[#11141b] border-r border-gray-200 dark:border-[#1e232d] flex flex-col justify-between z-10 transition-colors duration-200">
         <div>
           <div className="flex items-center h-[72px] px-6">
@@ -161,7 +182,18 @@ export default function DashboardLayout({
                   <FiBarChart2 className="text-[18px]" /> <span>Reports</span>
                 </div>
               </Link>
-              
+
+              {/* PROJECT SETTINGS EKLENDİ */}
+              <Link href="/dashboard/project/settings" className={`relative flex items-center w-full rounded-lg transition-colors ${pathname.includes("/project/settings") ? "bg-blue-50 text-blue-600 dark:bg-[#1c2436] dark:text-[#5c9dff]" : "text-gray-600 dark:text-[#949eaf] hover:text-slate-900 hover:bg-gray-50 dark:hover:text-white dark:hover:bg-[#1a1e27]"}`}>
+                {pathname.includes("/project/settings") && <div className="absolute left-[-12px] top-1/2 -translate-y-1/2 w-[4px] h-[20px] bg-blue-600 dark:bg-[#5c9dff] rounded-r-md"></div>}
+                <div className="flex items-center gap-3 w-full px-3 py-2 font-medium">
+                  <svg className="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  <span>Settings</span>
+                </div>
+              </Link>
             </div>
           </div>
         </div>
@@ -194,12 +226,12 @@ export default function DashboardLayout({
               className="bg-transparent border-none outline-none text-[13px] text-slate-900 dark:text-white w-full placeholder-gray-400 dark:placeholder-[#6b7280]"
             />
           </div>
-          <div className="flex items-center gap-3 text-gray-500 dark:text-[#848d9c]">
+          <div className="flex items-center gap-4 text-gray-500 dark:text-[#848d9c]">
             
             {/* TEMA BUTONU */}
             <button 
               onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-              className="p-2 rounded-full hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-[#1e232d] transition-colors flex items-center justify-center"
+              className="p-2 rounded-full hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-[#1e232d] transition-colors flex items-center justify-center cursor-pointer"
               aria-label="Toggle Dark Mode"
             >
               {mounted ? (
@@ -209,16 +241,25 @@ export default function DashboardLayout({
               )}
             </button>
             
-            <button className="p-2 rounded-full hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-[#1e232d] transition-colors flex items-center justify-center">
+            {/* BİLDİRİM (BELL) BUTONU (Dinamik) */}
+            <Link 
+              href="/dashboard/notifications" 
+              className="relative p-2 rounded-full hover:bg-gray-100 hover:text-blue-600 dark:hover:bg-[#1e232d] transition-colors flex items-center justify-center cursor-pointer"
+            >
               <FiBell className="text-[18px]" />
-            </button>
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 bg-red-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full border-2 border-white dark:border-[#0b0d12]">
+                  {unreadCount > 9 ? "9+" : unreadCount}
+                </span>
+              )}
+            </Link>
           </div>
         </header>
 
         {children}
 
         {/* FLOATING ACTION BUTTON */}
-        <button className="fixed bottom-10 right-10 w-14 h-14 bg-blue-600 dark:bg-[#5c9dff] text-white dark:text-[#0b0d12] rounded-full flex items-center justify-center hover:bg-blue-700 dark:hover:bg-[#4a8bee] transition-colors shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-50">
+        <button className="fixed bottom-10 right-10 w-14 h-14 bg-blue-600 dark:bg-[#5c9dff] text-white dark:text-[#0b0d12] rounded-full flex items-center justify-center hover:bg-blue-700 dark:hover:bg-[#4a8bee] transition-colors shadow-[0_8px_30px_rgb(0,0,0,0.12)] z-50 cursor-pointer">
           <FiPlus className="text-[26px]" />
         </button>
       </main>
