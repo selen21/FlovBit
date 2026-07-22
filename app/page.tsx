@@ -16,40 +16,43 @@ export default function Home() {
   const currentTheme = theme === "system" ? resolvedTheme : theme;
 
   return (
-    <main className="min-h-screen bg-white dark:bg-[#0b0d12] font-sans text-gray-900 dark:text-[#e2e8f0] relative overflow-hidden flex flex-col items-center transition-colors duration-200">
+    <main className="min-h-screen bg-white dark:bg-[#0b0d12] font-sans text-gray-900 dark:text-[#e2e8f0] relative overflow-x-hidden flex flex-col items-center transition-colors duration-200">
       {/* Çok Hafif Arka Plan Işığı */}
       <div className="absolute top-[-20%] left-0 w-full h-[800px] bg-[radial-gradient(ellipse_at_top,#f5f3ff_0%,transparent_70%)] dark:bg-[radial-gradient(ellipse_at_top,#1a1e27_0%,transparent_70%)] -z-10" />
 
-      {/* Navbar - Daha kompakt boyutlar */}
-      <nav className="w-full max-w-5xl mx-auto flex items-center justify-between py-5 px-6">
-        <div className="flex items-center gap-2 font-bold text-lg tracking-tight text-slate-800 dark:text-white">
-           <img src="/flowbit_logo.png" alt="FlovBit" className="w-7 h-7" />
-           FlovBit
-        </div>
-        
-        {/* --- GÜNCELLENEN MENÜ (Scroll Linkleri) --- */}
-        <div className="flex gap-7 text-[14px] text-gray-600 dark:text-[#848d9c] font-medium">
-          <Link href="#features" className="hover:text-black dark:hover:text-white transition-colors">Features</Link>
-          <Link href="#board" className="hover:text-black dark:hover:text-white transition-colors">Board</Link>
-          <Link href="#cycles" className="hover:text-black dark:hover:text-white transition-colors">Cycles</Link>
-          <Link href="#automation" className="hover:text-black dark:hover:text-white transition-colors">Automation</Link>
-        </div>
-        
-        <div className="flex items-center gap-5">
-          {/* Tema Butonu */}
-          <button 
-            onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
-            className="p-2 text-gray-500 dark:text-[#848d9c] hover:text-black dark:hover:text-white transition-colors"
-          >
-            {mounted ? (currentTheme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />) : <div className="w-5 h-5"></div>}
-          </button>
+      {/* --- STICKY NAVBAR WRAPPER EKLENDİ --- */}
+      <div className="sticky top-0 z-50 w-full bg-white/80 dark:bg-[#0b0d12]/80 backdrop-blur-md border-b border-gray-200/50 dark:border-[#1e232d]/50 transition-colors">
+        {/* Navbar - Daha kompakt boyutlar */}
+        <nav className="w-full max-w-5xl mx-auto flex items-center justify-between py-4 px-6">
+          <div className="flex items-center gap-2 font-bold text-lg tracking-tight text-slate-800 dark:text-white">
+             <img src="/flowbit_logo.png" alt="FlovBit" className="w-7 h-7" />
+             FlovBit
+          </div>
+          
+          {/* --- GÜNCELLENEN MENÜ (Scroll Linkleri) --- */}
+          <div className="flex gap-7 text-[14px] text-gray-600 dark:text-[#848d9c] font-medium">
+            <Link href="#features" className="hover:text-black dark:hover:text-white transition-colors">Features</Link>
+            <Link href="#board" className="hover:text-black dark:hover:text-white transition-colors">Board</Link>
+            <Link href="#cycles" className="hover:text-black dark:hover:text-white transition-colors">Cycles</Link>
+            <Link href="#automation" className="hover:text-black dark:hover:text-white transition-colors">Automation</Link>
+          </div>
+          
+          <div className="flex items-center gap-5">
+            {/* Tema Butonu */}
+            <button 
+              onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+              className="p-2 text-gray-500 dark:text-[#848d9c] hover:text-black dark:hover:text-white transition-colors"
+            >
+              {mounted ? (currentTheme === "dark" ? <FiSun size={20} /> : <FiMoon size={20} />) : <div className="w-5 h-5"></div>}
+            </button>
 
-          <Link href="/register" className="text-[14px] font-medium text-gray-600 dark:text-[#848d9c] cursor-pointer hover:text-black dark:hover:text-white transition-colors">Sign in</Link>
-          <Link href="/register" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white dark:text-white px-5 py-2 rounded-full text-[14px] font-medium hover:opacity-90 transition-opacity">
-            Get Started
-          </Link>
-        </div>
-      </nav>
+            <Link href="/register" className="text-[14px] font-medium text-gray-600 dark:text-[#848d9c] cursor-pointer hover:text-black dark:hover:text-white transition-colors">Sign in</Link>
+            <Link href="/register" className="bg-gradient-to-r from-blue-600 to-purple-600 text-white dark:text-white px-5 py-2 rounded-full text-[14px] font-medium hover:opacity-90 transition-opacity">
+              Get Started
+            </Link>
+          </div>
+        </nav>
+      </div>
 
       {/* Hero Alanı - Küçültülmüş, derli toplu yapı */}
       <section className="flex flex-col items-center justify-center mt-16 px-4 text-center w-full max-w-3xl">
@@ -803,17 +806,20 @@ export default function Home() {
           {/* Company Kolonu */}
           <div className="flex flex-col gap-4 mt-2 md:mt-0">
             <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Company</h4>
-            <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">About Us</Link>
+            {/* Linkler Güncellendi */}
+            <Link href="/about" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">About Us</Link>
             <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Blog</Link>
             <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Careers</Link>
-            <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Contact</Link>
+            <Link href="/contact" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Contact</Link>
           </div>
 
           {/* Legal Kolonu */}
           <div className="flex flex-col gap-4 mt-2 md:mt-0">
             <h4 className="font-semibold text-gray-900 dark:text-white text-sm">Legal</h4>
-            <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="#" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Terms of Service</Link>
+            {/* Linkler Güncellendi ve Yeni Link Eklendi */}
+            <Link href="/privacy" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Terms of Service</Link>
+            <Link href="/security" className="text-[14px] text-gray-500 dark:text-[#848d9c] hover:text-blue-600 dark:hover:text-white transition-colors">Security & Privacy</Link>
           </div>
         </div>
 
